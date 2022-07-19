@@ -200,7 +200,6 @@ public class AgregarDatos extends javax.swing.JFrame {
         if(VentanaPrincipal.codigoBarra.getText().equals("")) {
             instanciaTablaProductos.mostrardatosProductos("",VentanaPrincipal.jTablaProductos);
         }else {
-
             instanciaTablaProductos.mostrardatosProductos(VentanaPrincipal.codigoBarra.getText(),VentanaPrincipal.jTablaProductos);
         }
         JOptionPane.showMessageDialog(null, "EL PRODUCTO FUE AGREGADO CON EXITO");

@@ -6,8 +6,10 @@
 package puntodeventa;
 
 import consultas.TablaProductos;
+import helpers.sql.Productos;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -17,6 +19,7 @@ import javax.swing.JPanel;
 public class VentanaPrincipal extends javax.swing.JFrame {
     TablaProductos tablaProductos=new TablaProductos();
     private static AgregarDatos instanciaAgregarDatos;
+    private static ActualizarProducto instanciaActualizarProducto;
     /**
      * Creates new form VentanaPrincipal
      */
@@ -88,6 +91,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/actualizar.png"))); // NOI18N
         jButton4.setText("ACTUALIZAR PRODUCTO");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Stencil", 0, 48)); // NOI18N
         jLabel2.setText("MATERIALES FABIO");
@@ -282,6 +290,40 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
         instanciaAgregarDatos.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        
+        int fila=jTablaProductos.getSelectedRow();
+        Productos helperProducto = new Productos();
+        String codigoBarra,cantidadProductos,descripcion,costoUnitario,precioUnitario;
+        String categoria;
+        if(fila>=0){
+            int idProducto= Integer.parseInt(jTablaProductos.getValueAt(fila, 0).toString().toString());
+            if(instanciaActualizarProducto==null){
+                instanciaActualizarProducto=new ActualizarProducto(this, rootPaneCheckingEnabled);
+            }
+            
+            codigoBarra = jTablaProductos.getValueAt(fila, 1).toString();
+            //cantidad=jTablaProductos.getValueAt(fila, 2).toString();
+            descripcion = jTablaProductos.getValueAt(fila, 3).toString();
+            precioUnitario=jTablaProductos.getValueAt(fila, 4).toString();
+            costoUnitario=jTablaProductos.getValueAt(fila, 5).toString();
+            categoria=helperProducto.obtenerCategoriaProducto(idProducto);
+            cantidadProductos=helperProducto.obtenerCantidadProductoDescripcion(descripcion);
+            
+            instanciaActualizarProducto.establecerTextoCodigoBarra(codigoBarra);
+            instanciaActualizarProducto.establecerTextoDescripcion(descripcion);
+            instanciaActualizarProducto.establecerTextoCantidadActual(cantidadProductos);
+            instanciaActualizarProducto.establecerTextoCostoUnitario(costoUnitario);
+            instanciaActualizarProducto.establecerTextoPrecioUnitario(precioUnitario);
+            instanciaActualizarProducto.establecerTextoCategoria(categoria);
+            instanciaActualizarProducto.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(rootPane,"Debe seleccionar un producto");
+        }
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
