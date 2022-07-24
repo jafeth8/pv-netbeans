@@ -5,21 +5,21 @@
  */
 package puntodeventa;
 
-import consultas.TablaProductos;
+import helpers.JTableProductos;
 import helpers.agregarProductos.ValidacionesProductos;
 import helpers.sql.Productos;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import validaciones.Validaciones;
+import validaciones_comprobaciones.ValidacionesComprobaciones;
 
 /**
  *
  * @author jafeth888
  */
 public class ActualizarProducto extends javax.swing.JDialog {
-    TablaProductos instanciaTablaProductos=new TablaProductos();
+    JTableProductos instanciaTablaProductos=new JTableProductos();
     /**
      * Creates new form ActualizarProducto
      */
@@ -183,7 +183,7 @@ public class ActualizarProducto extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
-        Validaciones validacion=new Validaciones();
+        ValidacionesComprobaciones validacion=new ValidacionesComprobaciones();
         Productos instanciaProducto=new Productos();
         String codigoBarra,descripcion,cantidadProducto,costoUnitario,precioUnitario,categoria;
         codigoBarra=codigoBarraTextField.getText(); descripcion=descripcionTextField.getText();

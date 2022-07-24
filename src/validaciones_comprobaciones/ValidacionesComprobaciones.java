@@ -1,5 +1,5 @@
 
-package validaciones;
+package validaciones_comprobaciones;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,7 +11,7 @@ import puntodeventa.bd.ConexionBd;
  *
  * @author jafeth888
  */
-public class Validaciones {
+public class ValidacionesComprobaciones {
     ConexionBd cc= ConexionBd.obtenerInstancia();
     Connection cn= cc.conexion();
     public boolean validarProductos(String cod,String des){
@@ -73,6 +73,8 @@ public class Validaciones {
             return false;
         }
     }
+    
+
 
     
 }

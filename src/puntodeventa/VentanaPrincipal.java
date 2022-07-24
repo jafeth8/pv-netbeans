@@ -5,7 +5,8 @@
  */
 package puntodeventa;
 
-import consultas.TablaProductos;
+import helpers.Buscadores;
+import helpers.JTableProductos;
 import helpers.sql.Productos;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
@@ -17,7 +18,7 @@ import javax.swing.JPanel;
  * @author jafeth888
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
-    TablaProductos tablaProductos=new TablaProductos();
+    JTableProductos tablaProductos=new JTableProductos();
     private static AgregarDatos instanciaAgregarDatos;
     private static ActualizarProducto instanciaActualizarProducto;
     /**
@@ -45,7 +46,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         lblCantidad = new javax.swing.JLabel();
-        cantidadProductos = new javax.swing.JTextField();
+        textFieldcantidadProductos = new javax.swing.JTextField();
         comboBoxBusqueda = new javax.swing.JComboBox<>();
         codigoBarra = new javax.swing.JTextField();
         labelDescuento = new javax.swing.JLabel();
@@ -57,12 +58,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtablaCompras = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        jLabelTotal = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jLabelCambio = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -70,6 +71,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         usuarioLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         usuarioLabel.setForeground(new java.awt.Color(255, 51, 51));
@@ -103,9 +111,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         lblCantidad.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblCantidad.setText("CANTIDAD:");
 
-        cantidadProductos.setText("1");
+        textFieldcantidadProductos.setText("1");
 
         comboBoxBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DESCRIPCION", "CATEGORIA" }));
+
+        codigoBarra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        codigoBarra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                codigoBarraKeyReleased(evt);
+            }
+        });
 
         labelDescuento.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         labelDescuento.setText("DESCUENTO:");
@@ -134,7 +149,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cancelar.png"))); // NOI18N
         jButton8.setText("CANCELAR PRODUCTO");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtablaCompras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -145,13 +160,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(jtablaCompras);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel5.setText("TOTAL $ :");
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel6.setText("0.0");
+        jLabelTotal.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabelTotal.setText("0.0");
 
         jButton9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dinero.png"))); // NOI18N
@@ -160,8 +175,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel7.setText("CAMBIO:");
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel8.setText("0.0");
+        jLabelCambio.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabelCambio.setText("0.0");
 
         jMenu2.setText("USUARIOS");
         jMenuBar1.add(jMenu2);
@@ -187,13 +202,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, Short.MAX_VALUE)
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, Short.MAX_VALUE)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabelCambio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,7 +229,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblCantidad)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cantidadProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(textFieldcantidadProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,7 +265,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cantidadProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textFieldcantidadProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(codigoBarra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelDescuento)
@@ -270,13 +285,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6)
+                            .addComponent(jLabelTotal)
                             .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(jLabel8))))
+                            .addComponent(jLabelCambio))))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
@@ -325,6 +340,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        // TODO add your handling code here:
+        codigoBarra.requestFocus();
+    }//GEN-LAST:event_formWindowGainedFocus
+
+    private void codigoBarraKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoBarraKeyReleased
+        // TODO add your handling code here:
+        Buscadores buscador =new Buscadores();
+        buscador.searchByBarCode(jTablaProductos,jtablaCompras,textFieldDescuento, codigoBarra, comboBoxBusqueda, textFieldcantidadProductos, jLabelTotal,Ruta.nametablaTcompras);
+    }//GEN-LAST:event_codigoBarraKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -362,7 +388,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JTextField cantidadProductos;
     public static javax.swing.JTextField codigoBarra;
     private javax.swing.JComboBox<String> comboBoxBusqueda;
     private javax.swing.JButton jButton2;
@@ -375,9 +400,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabelCambio;
+    private javax.swing.JLabel jLabelTotal;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -386,10 +411,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JTable jTablaProductos;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jtablaCompras;
     private javax.swing.JLabel labelDescuento;
     private javax.swing.JLabel lblCantidad;
     private javax.swing.JTextField textFieldDescuento;
+    private javax.swing.JTextField textFieldcantidadProductos;
     private javax.swing.JLabel usuarioLabel;
     // End of variables declaration//GEN-END:variables
 

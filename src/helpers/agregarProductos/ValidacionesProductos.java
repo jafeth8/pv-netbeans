@@ -1,13 +1,13 @@
 
 package helpers.agregarProductos;
 import javax.swing.JOptionPane;
-import validaciones.Validaciones;
+import validaciones_comprobaciones.ValidacionesComprobaciones;
 /**
  *
  * @author jafeth888
  */
 public class ValidacionesProductos {
-    Validaciones validacion=new Validaciones();
+    ValidacionesComprobaciones validacion=new ValidacionesComprobaciones();
     public boolean verificarPrecioUnitarioProducto(String precioUnitario_formatText, String costoUnitario_formatText) {
         boolean precioUnitarioCorrecto=true;
         if (!validacion.isDouble(precioUnitario_formatText) || !validacion.isDouble(costoUnitario_formatText)) { //se comprueba que los parametros avaluar sean numero y no letras o caracteres

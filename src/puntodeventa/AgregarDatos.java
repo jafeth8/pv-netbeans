@@ -5,14 +5,14 @@
  */
 package puntodeventa;
 
-import consultas.TablaProductos;
+import helpers.JTableProductos;
 import helpers.agregarProductos.ValidacionesProductos;
 import helpers.sql.Productos;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import validaciones.Validaciones;
+import validaciones_comprobaciones.ValidacionesComprobaciones;
 
 /**
  *
@@ -20,7 +20,7 @@ import validaciones.Validaciones;
  */
 public class AgregarDatos extends javax.swing.JFrame {
     Productos instanciaProducto=new Productos();
-    TablaProductos instanciaTablaProductos=new TablaProductos();
+    JTableProductos instanciaTablaProductos=new JTableProductos();
     /**
      * Creates new form AgregarDatos
      */
@@ -168,7 +168,7 @@ public class AgregarDatos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Validaciones validacion = new Validaciones();
+        ValidacionesComprobaciones validacion = new ValidacionesComprobaciones();
         String codigoBarra=textFieldCodigoDeBarra.getText(),cantidad=textField_Cantidad.getText();
         String descripcion=textField_Descripcion.getText(),precioUnitario=textFieldPrecioUnitario.getText();
         String costoUnitario=textFieldCostoUnitario.getText(),categoria=textFieldCategoria.getText();
@@ -213,7 +213,7 @@ public class AgregarDatos extends javax.swing.JFrame {
 
     private void textFieldCodigoDeBarraKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldCodigoDeBarraKeyReleased
         // TODO add your handling code here:
-        Validaciones validacion = new Validaciones();
+        ValidacionesComprobaciones validacion = new ValidacionesComprobaciones();
         if(validacion.codigoDeBarrasYaExistente(textFieldCodigoDeBarra.getText())) {
             labelCodigoDeBarrasExistente.setText("Este codigo de barras ya existe!");
         }else {
@@ -223,7 +223,7 @@ public class AgregarDatos extends javax.swing.JFrame {
 
     private void textField_DescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textField_DescripcionKeyReleased
         // TODO add your handling code here:
-        Validaciones validacion = new Validaciones();
+        ValidacionesComprobaciones validacion = new ValidacionesComprobaciones();
         if(validacion.descripcionProductoYaExistente(textField_Descripcion.getText())) {
             labelDescripcionProductoExistente.setText("Esta descripcion ya existe!");
         }else {

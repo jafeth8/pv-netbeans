@@ -1,5 +1,5 @@
 
-package consultas;
+package helpers;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,7 +16,7 @@ import puntodeventa.bd.ConexionBd;
  *
  * @author jafeth888
  */
-public class TablaProductos {
+public class JTableProductos {
     ConexionBd cc= ConexionBd.obtenerInstancia();
     Connection cn= cc.conexion();
     public void mostrardatosProductos(String valor,JTable tablaProductos){
