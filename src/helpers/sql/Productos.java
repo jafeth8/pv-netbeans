@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import puntodeventa.bd.ConexionBd;
 
@@ -165,5 +167,22 @@ public class Productos {
             }
         }
         return cantidad;
+    }
+    
+    public void actualizarStateTablaProductos(int id_producto,int idState) {
+        PreparedStatement pst=null;
+        try {
+            pst = cn.prepareStatement("UPDATE productos SET fk_id_state='"+idState+"' WHERE id='"+id_producto+"'");
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,e.getMessage(),"Error al actualizar State tablaProductos",JOptionPane.ERROR_MESSAGE);
+        }finally{
+            try {
+                pst.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null,"helpers.sql.Productos: "+ex.getMessage(),"No se pudo cerrar la conexion al actualizar State",JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
     }
 }

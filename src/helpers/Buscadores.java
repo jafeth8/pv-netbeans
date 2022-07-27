@@ -144,7 +144,7 @@ public class Buscadores {
         }
         /*------------FIN DE BUSQUEDA DE CODIGO DE BARRAS--------------------------------------*/
         else if (MetodoBusqueda.equals("DESCRIPCION")) {
-                conexionTableModel.mostrardatosProductos(buscador.getText(), tablaProductos);
+                conexionTableModel.mostrarDatosProductos(buscador.getText(), tablaProductos);
         }else if(MetodoBusqueda.equals("CATEGORIA")) {
                 conexionTableModel.mostrardatosCategorias(buscador.getText(), tablaProductos);
         }

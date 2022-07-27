@@ -7,6 +7,7 @@ package puntodeventa;
 
 import helpers.Buscadores;
 import helpers.JTableProductos;
+import helpers.TableModel;
 import helpers.sql.Productos;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
@@ -96,6 +97,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
         jButton3.setText("ELIMINAR PRODUCTO");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/actualizar.png"))); // NOI18N
         jButton4.setText("ACTUALIZAR PRODUCTO");
@@ -350,6 +356,31 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Buscadores buscador =new Buscadores();
         buscador.searchByBarCode(jTablaProductos,jtablaCompras,textFieldDescuento, codigoBarra, comboBoxBusqueda, textFieldcantidadProductos, jLabelTotal,Ruta.nametablaTcompras);
     }//GEN-LAST:event_codigoBarraKeyReleased
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        Productos schemaProducto=new Productos();
+        TableModel tableModel=new TableModel();
+        int fila=jTablaProductos.getSelectedRow();
+        
+        int idProducto = Integer.parseInt(jTablaProductos.getValueAt(fila, 0).toString());
+        if (fila == -1) {
+                JOptionPane.showMessageDialog(null, "DEBE SELECCIONAR UN PRODUCTO", "Mensaje de Error",JOptionPane.ERROR_MESSAGE);
+        } else {
+            int opcion=JOptionPane.showConfirmDialog(null,"Esta seguro de eliminar este producto","Advertencia",JOptionPane.YES_NO_OPTION);
+            System.out.println("opcion " +opcion);
+            if(opcion==0) {
+                schemaProducto.actualizarStateTablaProductos(idProducto, 3); // 3 es eliminado en la tabla sstate
+                JOptionPane.showMessageDialog(null, "producto eliminado satisfactoriamente");
+                tableModel.mostrarDatosProductos("", jTablaProductos);
+                if(codigoBarra.getText().equals("")) {
+                    tableModel.mostrarDatosProductos("",jTablaProductos);
+                }else {
+                    tableModel.mostrarDatosProductos(codigoBarra.getText(),jTablaProductos);
+                }
+            }	
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
