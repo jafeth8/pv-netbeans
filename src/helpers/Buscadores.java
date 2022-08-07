@@ -134,7 +134,8 @@ public class Buscadores {
             }
             /*--------------------FIN DE VALIDACIONES-----------------*/
             String Sub_Total= String.valueOf(cantidadJtextfield*resultadoDescuento);
-            helperTablaCompras.ingresarNuevoRegistroTablaTcompras(idProducto,String.valueOf(cantidadJtextfield), descripcion, resultadoDescuento, Sub_Total, jtextFieldDescuento.getText(),nameTablaCompras);
+            //la variable resultadoDescuento cuenta como "precio unitario final"
+            helperTablaCompras.ingresarNuevoRegistroTablaTcompras(idProducto,String.valueOf(cantidadJtextfield), descripcion, String.valueOf(resultadoDescuento), Sub_Total, jtextFieldDescuento.getText(),nameTablaCompras);
             conexionTableModel.datosTablaTcompras("", tablaCompras,nameTablaCompras);
             total=helperTablaCompras.obtenerSumatoriaSubtotalTablaTcompras(nameTablaCompras);
             buscador.setText("");				    					    

@@ -40,7 +40,7 @@ public class TablaCompras {
         }
     }
     
-    public void ingresarNuevoRegistroTablaTcompras(int idProducto,String cantidad,String descripcion,float precioUnitario,String subTotal,String descuento,String nameTablaTcompras) {
+    public void ingresarNuevoRegistroTablaTcompras(int idProducto,String cantidad,String descripcion,String precioUnitario,String subTotal,String descuento,String nameTablaTcompras) {
 	PreparedStatement preparedStatement=null;	
         try {
         preparedStatement = cn.prepareStatement("INSERT INTO "+nameTablaTcompras
@@ -48,7 +48,7 @@ public class TablaCompras {
         preparedStatement.setInt(1,idProducto);
         preparedStatement.setString(2,cantidad);
         preparedStatement.setString(3,descripcion);
-        preparedStatement.setFloat(4,precioUnitario);
+        preparedStatement.setString(4,precioUnitario);
         preparedStatement.setString(5,subTotal);
         preparedStatement.setString(6,descuento);
         preparedStatement.executeUpdate();
@@ -118,5 +118,17 @@ public class TablaCompras {
         }
         return sumatoria;
     }
+        
+    public void truncarTablaTcompras(String querySql) {
+        try {
+            PreparedStatement pst = cn.prepareStatement(querySql);
+            pst.executeUpdate();
+        } catch (Exception e) {
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    }
+    
+    
     
 }

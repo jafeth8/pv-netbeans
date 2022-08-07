@@ -8,7 +8,9 @@ package puntodeventa;
 import helpers.Buscadores;
 import helpers.JTableProductos;
 import helpers.TableModel;
+import helpers.compras.Carrito;
 import helpers.sql.Productos;
+import helpers.sql.TablaCompras;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -22,6 +24,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     JTableProductos tablaProductos=new JTableProductos();
     private static AgregarDatos instanciaAgregarDatos;
     private static ActualizarProducto instanciaActualizarProducto;
+    TableModel tableModel=new TableModel();
+    TablaCompras tablaCompras=new TablaCompras();
     /**
      * Creates new form VentanaPrincipal
      */
@@ -29,6 +33,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.setContentPane(new ImagenFondo());
         initComponents();
         tablaProductos.mostrardatosProductos("", jTablaProductos);
+        tableModel.datosTablaTcompras("", jtablaCompras,"tcompras");
+        jLabelTotal.setText(""+tablaCompras.obtenerSumatoriaSubtotalTablaTcompras("tcompras"));
     }
 
     /**
@@ -120,6 +126,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         textFieldcantidadProductos.setText("1");
 
         comboBoxBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DESCRIPCION", "CATEGORIA" }));
+        comboBoxBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxBusquedaActionPerformed(evt);
+            }
+        });
 
         codigoBarra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         codigoBarra.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -145,9 +156,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/nuevo.png"))); // NOI18N
         jButton5.setText("NUEVA VENTA");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carrito.png"))); // NOI18N
         jButton6.setText("AGREGAR A CARRITO");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cotizacion.png"))); // NOI18N
         jButton7.setText("COTIZAR");
@@ -360,9 +381,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         Productos schemaProducto=new Productos();
-        TableModel tableModel=new TableModel();
+     
         int fila=jTablaProductos.getSelectedRow();
-        
         int idProducto = Integer.parseInt(jTablaProductos.getValueAt(fila, 0).toString());
         if (fila == -1) {
                 JOptionPane.showMessageDialog(null, "DEBE SELECCIONAR UN PRODUCTO", "Mensaje de Error",JOptionPane.ERROR_MESSAGE);
@@ -381,6 +401,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }	
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        tablaCompras.truncarTablaTcompras("TRUNCATE tcompras");		
+        jLabelTotal.setText("0.0");
+        jLabelCambio.setText("0.0");
+        JOptionPane.showMessageDialog(null, "SE GENERO UNA NUEVA VENTA :D");
+        tableModel.datosTablaTcompras("", jtablaCompras,"tcompras");
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        Carrito carrito = new Carrito();
+        //carrito.addCarrito(jTablaProductos, jtablaCompras,textFieldDescuento);
+        carrito.addCarrito(jTablaProductos, jtablaCompras, textFieldDescuento, codigoBarra, jLabelTotal,Ruta.nametablaTcompras);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void comboBoxBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxBusquedaActionPerformed
+        // TODO add your handling code here:
+        codigoBarra.requestFocus();
+    }//GEN-LAST:event_comboBoxBusquedaActionPerformed
 
     /**
      * @param args the command line arguments

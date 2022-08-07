@@ -278,12 +278,10 @@ public class TableModel {
         String sql="";
         if(valor.equals(""))
         {
-            //sql="SELECT CODIGO_BARRA,CANTIDAD,DESCRIPCION,PRECIO_UNITARIO FROM productos";
             sql="select * from "+nameTablaTcompras+"";
         }
         else{
-            //sql="SELECT ID,CODIGO_BARRA,CANTIDAD,DESCRIPCION,PRECIO_UNITARIO,COSTO_UNITARIO,CATEGORIA FROM productos WHERE descripcion like '%"+valor+"%' AND fk_id_state=1 ";
-            //sql="SELECT CODIGO_BARRA,CANTIDAD,DESCRIPCION,PRECIO_UNITARIO FROM productos WHERE descripcion like '%"+valor+"%'";
+            //TODO: query adicional
         }
 
         Object []datos = new Object [6];
