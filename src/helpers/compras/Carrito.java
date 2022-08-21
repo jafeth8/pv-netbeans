@@ -3,10 +3,12 @@ package helpers.compras;
 
 import helpers.TableModel;
 import helpers.sql.TablaCompras;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import puntodeventa.VentanaPrincipal;
 import validaciones_comprobaciones.ValidacionesComprobaciones;
 
 /**
@@ -17,6 +19,14 @@ public class Carrito {
     ValidacionesComprobaciones validacion =new ValidacionesComprobaciones();
     TablaCompras instanciaTablaCompras=new TablaCompras();
     TableModel tableModel = new TableModel();
+    JFrame parent;
+
+    public Carrito(JFrame parent) {
+        this.parent=parent;
+    }
+   
+    CantidadProductoUnidades instanciaCantidadProductoUnidades=new CantidadProductoUnidades(parent, true);
+    
     private boolean validacionCantidad(String categoria,String cantidad){
         boolean cantidadValida=true;
         
@@ -48,6 +58,7 @@ public class Carrito {
             JOptionPane.showMessageDialog(null, "El descuento no debe ser mayor al precio del producto","Aviso!",JOptionPane.WARNING_MESSAGE);
             textFieldDescuento.setText("0.0");
             return false;
+            
         }
         float diferenciaPrecioDescuento=precioTablaProductos-Float.parseFloat(descuento);
         float descuentoPermitido=precioTablaProductos-costo;
@@ -74,6 +85,24 @@ public class Carrito {
         return stockValido;
     }
     
+    private String ingresarCantidadProductos(String categoria,float precio,float descuento){
+        String nProductos=null;
+        
+        if(categoria.equals("unidades")){
+            CantidadProductoUnidades.precioProducto=precio;
+            CantidadProductoUnidades.descuento=descuento;
+            instanciaCantidadProductoUnidades.setLocationRelativeTo(null);
+            instanciaCantidadProductoUnidades.setVisible(true);
+            nProductos=CantidadProductoUnidades.valueCantidadProducto;
+        }else{
+            do{                
+                nProductos=JOptionPane.showInputDialog("INGRESA LA CANTIDAD DE PRODUCTOS");
+            }while (nProductos.equals("") || validacionCantidad(categoria,nProductos)==false);
+        }
+        
+        return nProductos;
+    }
+    
     public void addCarrito(JTable tablaProductos,JTable tablaCompras,JTextField jtextFieldDescuento,JTextField buscador,JLabel labelTotal,String nameTablaCompras){
         int fila = tablaProductos.getSelectedRow();
         if(fila<0){
@@ -85,21 +114,19 @@ public class Carrito {
         int idProducto=Integer.parseInt(tablaProductos.getValueAt(fila, 0).toString());
         float total=0,subTotal;
         
-        
         String categoria=tablaProductos.getValueAt(fila, 6).toString();
-        do{                
-            Nproductos=JOptionPane.showInputDialog("INGRESA LA CANTIDAD DE PRODUCTOS");
-        }while (Nproductos.equals("") || validacionCantidad(categoria,Nproductos)==false);
-
-        cantidadProductosIngresada=Float.parseFloat(Nproductos);
-
+        
         float descuento=Float.parseFloat((jtextFieldDescuento.getText().toString()));
         cantidad=tablaProductos.getValueAt(fila, 2).toString();
         descripcion = tablaProductos.getValueAt(fila, 3).toString();
         precio=tablaProductos.getValueAt(fila, 4).toString();
         float costo=Float.parseFloat(tablaProductos.getValueAt(fila, 5).toString());
         float cantidadEnTabla = Float.parseFloat(cantidad);
-
+        
+        Nproductos=ingresarCantidadProductos(categoria,Float.parseFloat(precio),descuento);
+        if(Nproductos==null) return;//la variable sera nula si se cierran las ventanas jDialog en el metodo 'ingresarCantidadProductos'
+        cantidadProductosIngresada=Float.parseFloat(Nproductos);
+        
         if(validacionDescuento(jtextFieldDescuento.getText(),jtextFieldDescuento,Float.parseFloat(precio),costo,descripcion)==false) return;
 
         if(validacionStock(cantidadProductosIngresada, cantidadEnTabla)==false)return;
@@ -124,7 +151,7 @@ public class Carrito {
                     /*---------------------FIN VERIFICACION PARA ASIGNAR UN DESCUENTO CORRECTO AL PRODUCTO-----*/
                     // x= cantidad a=sub_total
                     cantidadFinal=(Float.parseFloat(cantidadTablaCompras)+cantidadProductosIngresada);
-                    subTotal=((Float.parseFloat(cantidadTablaCompras)+cantidadProductosIngresada)*resultadoDescuento);//simplificar linea
+                    subTotal=(cantidadFinal*resultadoDescuento);
                     if (cantidadEnTabla<cantidadFinal) {
                         JOptionPane.showMessageDialog(null,"PRODUCTO INSUFICIENTE","Mensaje de Error", JOptionPane.ERROR_MESSAGE);
                         return;

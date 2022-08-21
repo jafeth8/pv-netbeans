@@ -413,7 +413,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        Carrito carrito = new Carrito();
+        Carrito carrito = new Carrito(this);
         //carrito.addCarrito(jTablaProductos, jtablaCompras,textFieldDescuento);
         carrito.addCarrito(jTablaProductos, jtablaCompras, textFieldDescuento, codigoBarra, jLabelTotal,Ruta.nametablaTcompras);
     }//GEN-LAST:event_jButton6ActionPerformed
