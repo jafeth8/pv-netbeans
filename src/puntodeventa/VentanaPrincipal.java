@@ -15,6 +15,7 @@ import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import puntodeventa.bd.Ruta;
 
 /**
  *
@@ -68,7 +69,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jtablaCompras = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jLabelTotal = new javax.swing.JLabel();
-        jButton9 = new javax.swing.JButton();
+        botonPagar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabelCambio = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -195,9 +196,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabelTotal.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabelTotal.setText("0.0");
 
-        jButton9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dinero.png"))); // NOI18N
-        jButton9.setText("PAGAR");
+        botonPagar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        botonPagar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dinero.png"))); // NOI18N
+        botonPagar.setText("PAGAR");
+        botonPagar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonPagarActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel7.setText("CAMBIO:");
@@ -231,7 +237,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, Short.MAX_VALUE)
-                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botonPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, Short.MAX_VALUE)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -313,7 +319,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(jLabelTotal)
-                            .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(botonPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -423,6 +429,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         codigoBarra.requestFocus();
     }//GEN-LAST:event_comboBoxBusquedaActionPerformed
 
+    private void botonPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPagarActionPerformed
+        // TODO add your handling code here:
+        Carrito carrito=new Carrito();
+        carrito.pagar(jTablaProductos, jtablaCompras, jLabelTotal, jLabelCambio, usuarioLabel,true);
+    }//GEN-LAST:event_botonPagarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -459,6 +471,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonPagar;
     private javax.swing.JButton btnAgregar;
     public static javax.swing.JTextField codigoBarra;
     private javax.swing.JComboBox<String> comboBoxBusqueda;
@@ -469,7 +482,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;

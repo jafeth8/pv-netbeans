@@ -185,4 +185,34 @@ public class Productos {
             }
         }
     }
+    
+    public float obtenerCostoProductoTablaProducto(int idProducto) {
+   	 
+    	String sql="SELECT COSTO_UNITARIO FROM productos WHERE ID = '"+idProducto+"'";
+        float costo=0;    	 
+	Statement st=null;
+        ResultSet rs=null;
+        try {
+            st = cn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()){
+                costo=rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null,ex.getMessage(),"helpers.sql.Productos.obtenerCostoProductoTablaProducto:Error!",JOptionPane.ERROR_MESSAGE);
+
+        }finally {
+            try {
+                if(st!=null)st.close();
+                if(rs!=null)rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,"helpers.sql.Productos.obtenerCostoProductoTablaProducto: "+e.getMessage(),"No se pudo cerrar la conexion al obtener costo producto",JOptionPane.INFORMATION_MESSAGE);
+            }
+	}
+        
+        return costo;
+    }
+    
 }
