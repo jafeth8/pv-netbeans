@@ -173,9 +173,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cotizacion.png"))); // NOI18N
         jButton7.setText("COTIZAR");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cancelar.png"))); // NOI18N
         jButton8.setText("CANCELAR PRODUCTO");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jtablaCompras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -434,6 +444,29 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         Carrito carrito=new Carrito();
         carrito.pagar(jTablaProductos, jtablaCompras, jLabelTotal, jLabelCambio, usuarioLabel,true);
     }//GEN-LAST:event_botonPagarActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        int fila=jtablaCompras.getSelectedRow();
+        float total,subTotal;
+        System.out.println("la fila es: "+fila);
+        if(fila>=0){
+            total=tablaCompras.obtenerSumatoriaSubtotalTablaTcompras(Ruta.nametablaTcompras);
+            String descripcionProducto=jtablaCompras.getValueAt(fila, 2).toString();
+            String subTotaltabla=jtablaCompras.getValueAt(fila, 4).toString();
+            subTotal=Float.parseFloat(subTotaltabla);
+            total=total-subTotal;
+            jLabelTotal.setText(""+total);
+            tablaCompras.eliminarRegistroTablaTcompras(descripcionProducto,Ruta.nametablaTcompras);
+            tableModel.datosTablaTcompras("", jtablaCompras,Ruta.nametablaTcompras);
+        }else{
+            JOptionPane.showMessageDialog(null,"NO SELECCIONO PRODUCTO","Mensaje de Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -129,6 +129,16 @@ public class TablaCompras {
         }
     }
     
+    public void eliminarRegistroTablaTcompras(String descripcion,String nameTablaCompras) {
+        try {
+            PreparedStatement pst = cn.prepareStatement("DELETE FROM "+nameTablaCompras+" WHERE  DESCRIPCION=?");
+            pst.setString(1, descripcion);
+            pst.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage(),"Error al aliminar registro en tabla compras", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
-    
+        
 }

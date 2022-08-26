@@ -117,6 +117,7 @@ public class Carrito {
         }else{
             do{                
                 nProductos=JOptionPane.showInputDialog("INGRESA LA CANTIDAD DE PRODUCTOS");
+                if(nProductos==null)break;//evita lanzar una excepcion -->> null.equals etc
             }while (nProductos.equals("") || validacionCantidad(categoria,nProductos)==false);
         }
         
