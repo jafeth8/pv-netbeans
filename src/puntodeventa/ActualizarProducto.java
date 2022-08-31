@@ -5,7 +5,7 @@
  */
 package puntodeventa;
 
-import helpers.JTableProductos;
+import helpers.TableModel;
 import helpers.agregarProductos.ValidacionesProductos;
 import helpers.sql.Productos;
 import java.awt.Graphics;
@@ -19,7 +19,7 @@ import validaciones_comprobaciones.ValidacionesComprobaciones;
  * @author jafeth888
  */
 public class ActualizarProducto extends javax.swing.JDialog {
-    JTableProductos instanciaTablaProductos=new JTableProductos();
+    TableModel tableModel=new TableModel();
     /**
      * Creates new form ActualizarProducto
      */
@@ -262,9 +262,9 @@ public class ActualizarProducto extends javax.swing.JDialog {
         instanciaProducto.ActualizarProducto(codigoBarra,cantidadProducto,descripcion,precioUnitario,costoUnitario,categoria);
         
         if(VentanaPrincipal.codigoBarra.getText().equals("")) {
-            instanciaTablaProductos.mostrardatosProductos("",VentanaPrincipal.jTablaProductos);
+            tableModel.mostrarDatosProductos("",VentanaPrincipal.jTablaProductos);
         }else {
-            instanciaTablaProductos.mostrardatosProductos(VentanaPrincipal.codigoBarra.getText(),VentanaPrincipal.jTablaProductos);
+            tableModel.mostrarDatosProductos(VentanaPrincipal.codigoBarra.getText(),VentanaPrincipal.jTablaProductos);
         }
         
         this.setVisible(false);

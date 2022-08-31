@@ -215,4 +215,60 @@ public class Productos {
         return costo;
     }
     
+    public String obtenerCategoriaTablaProducto(int idProducto) {//tal vez no se ocupe
+      	 
+    	String sql="SELECT CATEGORIA FROM productos WHERE ID = '"+idProducto+"'";
+	String categoria="";    	 
+	Statement st=null;
+        ResultSet rs=null;	    
+        try {
+            st = cn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()){
+                categoria=rs.getString(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null,ex.getMessage(),"helpers.sql.Productos.obtenerCategoriaoTablaProducto:Error!",JOptionPane.ERROR_MESSAGE);
+        }finally {
+            try {
+                if(st!=null)st.close();
+                if(rs!=null)rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,"helpers.sql.Productos.obtenerCategoriaTablaProducto: "+e.getMessage(),"No se pudo cerrar la conexion al obtener categoria del producto",JOptionPane.WARNING_MESSAGE);
+            }
+	}
+        
+        return categoria;
+    }
+    
+    public float obtenerCantidadTablaProducto(int idProducto) {  
+		    	 
+    	String sql="SELECT CANTIDAD FROM productos WHERE ID = '"+idProducto+"'";
+        float cantidad=0;    	 
+	Statement st = null;
+        ResultSet rs = null;	    
+        try {
+            st = cn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()){
+                cantidad=rs.getFloat(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null,ex.getMessage(),"helpers.sql.Productos.obtenerCantidadTablaProducto:Error!",JOptionPane.ERROR_MESSAGE);
+
+        }finally {
+            try {
+                if(st!=null)st.close();
+                if(rs!=null)rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,"helpers.sql.Productos.obtenerCategoriaTablaProducto: "+e.getMessage(),"No se pudo cerrar la conexion al obtener cantidad del producto",JOptionPane.WARNING_MESSAGE);
+            }
+	}
+        return cantidad;
+    }
+    
 }

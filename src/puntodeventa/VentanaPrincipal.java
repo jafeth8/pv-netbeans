@@ -6,12 +6,14 @@
 package puntodeventa;
 
 import helpers.Buscadores;
-import helpers.JTableProductos;
+import helpers.MetodosImprimir;
 import helpers.TableModel;
 import helpers.compras.Carrito;
+import helpers.compras.ComprasPorApartado;
 import helpers.sql.Productos;
 import helpers.sql.TablaCompras;
 import java.awt.Graphics;
+import java.time.LocalDate;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,18 +24,21 @@ import puntodeventa.bd.Ruta;
  * @author jafeth888
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
-    JTableProductos tablaProductos=new JTableProductos();
     private static AgregarDatos instanciaAgregarDatos;
     private static ActualizarProducto instanciaActualizarProducto;
     TableModel tableModel=new TableModel();
     TablaCompras tablaCompras=new TablaCompras();
+    ComprasPorApartado instanciaComprasPorApartado = new ComprasPorApartado();
+    MetodosImprimir instanciaMetodosImprimir=new MetodosImprimir();
+    public static int setClienteId=0;
+    public static String NombreClienteApartados="";
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         this.setContentPane(new ImagenFondo());
         initComponents();
-        tablaProductos.mostrardatosProductos("", jTablaProductos);
+        tableModel.mostrarDatosProductos("", jTablaProductos);
         tableModel.datosTablaTcompras("", jtablaCompras,"tcompras");
         jLabelTotal.setText(""+tablaCompras.obtenerSumatoriaSubtotalTablaTcompras("tcompras"));
     }
@@ -49,7 +54,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         usuarioLabel = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCredito = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -99,8 +104,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/credito.png"))); // NOI18N
-        jButton2.setText("A CREDITO");
+        btnCredito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/credito.png"))); // NOI18N
+        btnCredito.setText("A CREDITO");
+        btnCredito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreditoActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
         jButton3.setText("ELIMINAR PRODUCTO");
@@ -277,7 +287,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addGap(18, 18, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
@@ -303,7 +313,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCredito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -468,6 +478,51 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void btnCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreditoActionPerformed
+
+        MetodosImprimir instanciaImprimir=new MetodosImprimir();
+        /*---VARIABLES: PARA INSERTAR EN TABLA APARTADOS*/
+        int idCliente;
+        int id_producto;// perfectamente se podria utilizar (setClienteId) la variable estatica de la clase, pero para no revolver variables la dejo XD
+        int cantidadIngresada;
+        /*---FIN DE VARIABLES:PARA INSERTAR EN TABLA APARTADOS */
+        float total=0;
+        total=tablaCompras.obtenerSumatoriaSubtotalTablaTcompras(Ruta.nametablaTcompras);
+        int filas=jtablaCompras.getRowCount();
+        
+        if(filas==0){
+            JOptionPane.showMessageDialog(null,"Primero debes agregar productos al carrito");
+            return;
+        }
+        JOptionPane.showMessageDialog(null,"enseguida seleccione al cliente que hara el apartado");
+        MostrarClientes cliente=new MostrarClientes(this, rootPaneCheckingEnabled);
+        cliente.setVisible(rootPaneCheckingEnabled);
+        
+        idCliente=setClienteId;//setIdCliente es una variable estatica para recibir datos de la ventana MostrarClientes
+        if(idCliente==0) {//si id cliente es igual a cero significa que no se establecio un idCliente, por lo tanto la ventana fue cerrada
+            JOptionPane.showMessageDialog(null, "operacion cancelada" ,"NO SELECCIONO AL CLIENTE!!", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String fechaApartado=LocalDate.now().toString();
+        boolean exito=instanciaComprasPorApartado.apartarProductos(jtablaCompras, idCliente, total, fechaApartado, total, Ruta.ESTADO_DEUDA_TABLA_APARTADOS);
+        
+        int opcion=403;
+        if(exito==true)opcion=JOptionPane.showConfirmDialog(null,"desea imprimir el apartado?","" ,JOptionPane.YES_NO_OPTION);
+        if(opcion==0){
+            for (int i = 0; i <2; i++) {
+                instanciaMetodosImprimir.imprimirApartado(jtablaCompras, jLabelTotal, usuarioLabel, NombreClienteApartados);
+            }
+        }
+        if(exito==true)JOptionPane.showMessageDialog(null,"Apartado realizado correctamente");
+        tablaCompras.truncarTablaTcompras("TRUNCATE "+Ruta.nametablaTcompras+"");
+        jLabelTotal.setText("0.0");
+	jLabelCambio.setText("0.0");
+        setClienteId=0;
+	NombreClienteApartados="";
+        tableModel.mostrarDatosProductos("",jTablaProductos);
+        tableModel.datosTablaTcompras("", jtablaCompras, Ruta.nametablaTcompras);
+    }//GEN-LAST:event_btnCreditoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -506,9 +561,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonPagar;
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnCredito;
     public static javax.swing.JTextField codigoBarra;
     private javax.swing.JComboBox<String> comboBoxBusqueda;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
