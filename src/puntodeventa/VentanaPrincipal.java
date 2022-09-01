@@ -475,7 +475,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        float total;
+        total=(float) tablaCompras.obtenerSumatoriaSubtotalTablaTcompras(Ruta.nametablaTcompras);
+        if(total==0){
+            JOptionPane.showMessageDialog(null,"DEBES GENERAR UNA VENTA PARA COTIZAR","Mensaje de Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int pre=JOptionPane.showConfirmDialog(null, "DESEA IMPRIMIR LA COTIZACION ?","",JOptionPane.YES_NO_OPTION);
+        if(pre==0){
+            instanciaMetodosImprimir.imprimirCotizacion(jtablaCompras, jLabelTotal, usuarioLabel);
+        }else{
+            JOptionPane.showMessageDialog(null, "Cancelado","Mensaje de aviso",JOptionPane.CANCEL_OPTION);
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void btnCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreditoActionPerformed

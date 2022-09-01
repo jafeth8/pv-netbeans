@@ -105,12 +105,11 @@ public class MetodosImprimir {
             printer.toFile("impresion.txt");
 
             FileInputStream inputStream = null;
-            try {
-               inputStream = new FileInputStream("impresion.txt");
-            } catch (FileNotFoundException ex) {
-               ex.printStackTrace();
-            }
+            
+            inputStream = new FileInputStream("impresion.txt");
+            
             if (inputStream == null) {
+               JOptionPane.showMessageDialog(null,"inputStream es nulo","imprimir",JOptionPane.WARNING_MESSAGE);
                return;
             }
 
@@ -123,18 +122,16 @@ public class MetodosImprimir {
 
             if (defaultPrintService != null) {
                 DocPrintJob printJob = defaultPrintService.createPrintJob();
-                try {
-                    printJob.print(document, attributeSet);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                printJob.print(document, attributeSet);
+                
             } else {
                 System.err.println("No existen impresoras instaladas");
+                JOptionPane.showMessageDialog(null,"imprimir: No existen impresoras instaladas");
             }
             //inputStream.close();
         } catch (Exception e2) {
             e2.printStackTrace();
-            JOptionPane.showInternalMessageDialog(null," "+e2.getMessage());
+            JOptionPane.showMessageDialog(null,e2.getMessage(),"Error en imprimir",JOptionPane.ERROR_MESSAGE);
         }	
     }
 
@@ -209,12 +206,11 @@ public class MetodosImprimir {
             printer.toFile("impresion.txt");
 
             FileInputStream inputStream = null;
-            try {
-               inputStream = new FileInputStream("impresion.txt");
-            } catch (FileNotFoundException ex) {
-               ex.printStackTrace();
-            }
+            
+            inputStream = new FileInputStream("impresion.txt");
+           
             if (inputStream == null) {
+               JOptionPane.showMessageDialog(null,"inputStream es nulo","imprimir apartado",JOptionPane.WARNING_MESSAGE);
                return;
             }
 
@@ -232,10 +228,11 @@ public class MetodosImprimir {
                    printJob.print(document, attributeSet);
                }catch (Exception ex) {
                    ex.printStackTrace();
-                   JOptionPane.showMessageDialog(null,ex.getMessage(),"printJob.print()", mes);
+                   JOptionPane.showMessageDialog(null,ex.getMessage(),"impirmir apartado: printJob.print()", JOptionPane.WARNING_MESSAGE);
                }
             }else {
                System.err.println("No existen impresoras instaladas");
+               JOptionPane.showMessageDialog(null, "Imprimir apartado: No existen impresora instaladas");
             }
 
         } catch (Exception e) {
@@ -243,4 +240,98 @@ public class MetodosImprimir {
             JOptionPane.showMessageDialog(null,e.getMessage(),"Error al imprimir apartado",JOptionPane.WARNING_MESSAGE);
         }	
     }
+    
+    public void imprimirCotizacion(JTable tablaCompras,JLabel labelTotal,JLabel usuarioLabel){
+        Calendar fecha = new GregorianCalendar();
+        int anio = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH)+1;
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
+        int hora = fecha.get(Calendar.HOUR_OF_DAY);
+        int minuto = fecha.get(Calendar.MINUTE);
+        int segundo = fecha.get(Calendar.SECOND);	
+		
+        try {
+            PrinterMatrix printer = new PrinterMatrix();
+            Extenso e1 = new Extenso();
+            
+            e1.setNumber(10);
+            //Definir el tamanho del papel para la impresion de dinamico y 32 columnas
+            int filas = tablaCompras.getRowCount();
+            int tamanio = filas+15;
+            printer.setOutSize(tamanio, 80);
+
+            //Imprimir = 1ra linea de la columa de 1 a 32
+            printer.printTextWrap(0, 1, 5, 80, "=======================================================");
+            printer.printTextWrap(1, 1, 40, 80, "La soledad No 6"); //Nombre establecimiento
+            printer.printTextWrap(1, 1, 5, 80, "Materiales  Fabio"); //Barrio
+            printer.printTextWrap(2, 1, 40, 80, "Tel. 423-525-0138"); //Direccion
+            printer.printTextWrap(2, 1, 10, 80, "Aranza,Mich."); //Codigo Postal
+
+            printer.printTextWrap(3, 1, 0, 40, "Fecha: "+dia+"/"+mes+"/"+anio); //Aqui va la fecha de recibo
+            printer.printTextWrap(3, 1, 40, 80, "Hora"+hora+":"+minuto+":"+segundo); //Aqui va la hora de recibo
+			    
+			   
+            //printer.printTextWrap(9, 1, 3, 80, "Cliente");//Nombre del Cliente
+            //printer.printTextWrap(10,1, 5, 80, "������������������������������������������������������������������");
+            printer.printTextWrap(4,1, 0, 80, "Cant.   Producto    P/U   Sub.T");
+            //printer.printTextWrap(12,1, 0, 80, "## ");
+
+            for (int i = 0; i < filas; i++) {
+                int p = 5+i; //Fila
+
+                printer.printTextWrap(p , 1, 0, 19 , tablaCompras.getValueAt(i,1).toString());
+                printer.printTextWrap(p , 1, 5, 42 , tablaCompras.getValueAt(i,2).toString());
+                printer.printTextWrap(p , 1, 20, 49, tablaCompras.getValueAt(i,3).toString());
+
+                String pre1= printer.alinharADireita(10, tablaCompras.getValueAt(i,4).toString());
+                printer.printTextWrap(p , 1, 54, 80, pre1);
+
+                //String inp= printer.alinharADireita(7,punto_Venta.jtbl_venta.getValueAt(i,6).toString());
+                //printer.printTextWrap(p , 1, 25, 32, inp);
+            }
+			    
+            DecimalFormat formateador = new DecimalFormat("#.###");
+
+            //String cam= printer.alinharADireita(10,9);
+            printer.printTextWrap(filas+6, 1, 5, 80, "Cotizacion  : ");
+            printer.printTextWrap(filas+6, 1, 20, 80, "$"+ labelTotal.getText());
+
+            //printer.printTextWrap(filas+21, 1, 5, 80, "������������������������������������������������������������������");
+            printer.printTextWrap(filas+7, 1, 5,80, "!Formato de cotizacion!");
+            printer.printTextWrap(filas+8, 1, 5, 80, "Materiales FABIO");
+            printer.printTextWrap(filas+9, 1, 3, 80, "Cotizado por : "+usuarioLabel.getText());
+            //printer.printTextWrap(filas+13, 1, 3, 80, "Contacto: workitapp@gmail.com");
+            printer.printTextWrap(filas+10, 1, 3,80, "===================================================================");
+
+            printer.toFile("impresion.txt");
+		       
+            FileInputStream inputStream = null;
+           
+            inputStream = new FileInputStream("impresion.txt");
+          
+            if (inputStream == null) {
+                JOptionPane.showMessageDialog(null,"inputStream es nulo","imprimir cotizacion",JOptionPane.WARNING_MESSAGE);
+                return;                
+            }
+
+            DocFlavor docFormat = DocFlavor.INPUT_STREAM.AUTOSENSE;
+            Doc document = new SimpleDoc(inputStream, docFormat, null);
+
+            PrintRequestAttributeSet attributeSet = new HashPrintRequestAttributeSet();
+
+            PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+
+            if (defaultPrintService != null) {
+                DocPrintJob printJob = defaultPrintService.createPrintJob();
+                printJob.print(document, attributeSet);
+            } else {
+                System.err.println("No existen impresoras instaladas");
+                JOptionPane.showMessageDialog(null,"imprimir cotizacion: No existen impresoras instaladas");
+            }	
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,e.getMessage(),"Error al imprimir cotizacion",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
 }
