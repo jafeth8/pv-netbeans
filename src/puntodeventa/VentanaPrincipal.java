@@ -26,6 +26,7 @@ import puntodeventa.bd.Ruta;
 public class VentanaPrincipal extends javax.swing.JFrame {
     private static AgregarDatos instanciaAgregarDatos;
     private static ActualizarProducto instanciaActualizarProducto;
+    private static RegistrarClientes instanciaRegistrarClientes;
     TableModel tableModel=new TableModel();
     TablaCompras tablaCompras=new TablaCompras();
     ComprasPorApartado instanciaComprasPorApartado = new ComprasPorApartado();
@@ -80,6 +81,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
+        itemAgregarClientes = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
 
@@ -235,6 +237,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("CLIENTES");
+
+        itemAgregarClientes.setText("Agregar clientes");
+        itemAgregarClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAgregarClientesActionPerformed(evt);
+            }
+        });
+        jMenu3.add(itemAgregarClientes);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("REPORTES");
@@ -534,6 +545,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         tableModel.datosTablaTcompras("", jtablaCompras, Ruta.nametablaTcompras);
     }//GEN-LAST:event_btnCreditoActionPerformed
 
+    private void itemAgregarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAgregarClientesActionPerformed
+        if(instanciaRegistrarClientes==null){
+            instanciaRegistrarClientes=new RegistrarClientes(this, rootPaneCheckingEnabled);
+        }
+        
+        instanciaRegistrarClientes.setVisible(true);
+    }//GEN-LAST:event_itemAgregarClientesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -575,6 +594,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnCredito;
     public static javax.swing.JTextField codigoBarra;
     private javax.swing.JComboBox<String> comboBoxBusqueda;
+    private javax.swing.JMenuItem itemAgregarClientes;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
