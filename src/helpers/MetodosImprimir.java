@@ -18,6 +18,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
+import java.time.LocalDate;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -334,4 +335,94 @@ public class MetodosImprimir {
         }
     }
     
+    
+    public void imprimirComprobanteApartados(JTable tablaApartados, String dineroRecibido,String abono,String cambio){
+        int fila=tablaApartados.getSelectedRow();
+		
+        //String dinerorecibido = table.getValueAt(fila, 1).toString();
+        //String abono = table.getValueAt(fila, 2).toString();
+        //String cambio  =  table.getValueAt(fila, 3).toString();
+        Calendar fecha = new GregorianCalendar();
+        int anio = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH)+1;
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
+        //String fecha = table.getValueAt(fila, 4).toString();
+        String fechaVenta=LocalDate.now().toString();
+        int n=0;
+        String deuda = tablaApartados.getValueAt(fila, 5).toString();
+		
+        //bloque comentando para fines de testing
+        /*
+        if(n==0) {//esta condicional se uso para poder asignar un return; que detuviera el flujo de la funcion
+        Double DeudaFinal2 = Double.parseDouble(deuda) - Double.parseDouble(abono);
+        System.out.println("Deuda: "+deuda);
+        System.out.println("Abono: "+abono);
+        System.err.println(String.valueOf(DeudaFinal2));
+        return;
+        }
+        */
+        //fin de bloque comentado para fines de testing
+        
+        try {
+            PrinterMatrix printer = new PrinterMatrix();
+            Extenso e1 = new Extenso();
+
+            e1.setNumber(10);
+            //Definir el tamanho del papel para la impresion de dinamico y 32 columnas
+            // int filas = tablaHistorialVenta.getRowCount();
+            //int tamanio = filas+15;
+            printer.setOutSize(10, 80);
+
+            //Imprimir = 1ra linea de la columa de 1 a 32
+
+            printer.printTextWrap(0, 1, 5, 80, "=======================================================");
+            printer.printTextWrap(1, 1, 40, 80, "La soledad No 6"); //Nombre establecimiento
+            printer.printTextWrap(1, 1, 5, 80, "Materiales Fabio"); //Barrio
+            printer.printTextWrap(2, 1, 40, 80, "Tel. 423-525-0138"); //Direccion
+            printer.printTextWrap(2, 1, 10, 80, "Aranza,Mich."); //Codigo Postal
+            printer.printTextWrap(3, 1, 0, 40, "Fecha abono: "+fechaVenta);
+
+            printer.printTextWrap(4, 1, 0, 40, "Dinero Recibido: "+dineroRecibido);
+            printer.printTextWrap(5, 1, 0, 40, "Abono: "+abono);
+            printer.printTextWrap(6, 1, 0, 40, "Cambio : "+cambio);
+            Double DeudaFinal = Double.parseDouble(deuda) - Double.parseDouble(abono);
+            printer.printTextWrap(7, 1, 0, 40, "Deuda : "+ String.valueOf(DeudaFinal));
+
+            DecimalFormat formateador = new DecimalFormat("#.###");
+
+            printer.printTextWrap(8, 1, 5,80,"!Comprobante de pago!");
+			   
+            printer.printTextWrap(9, 1, 3,80, "===================================================================");
+
+            printer.toFile("impresion.txt");
+		       
+            FileInputStream inputStream = null;
+            
+            inputStream = new FileInputStream("impresion.txt");
+          
+            if (inputStream == null) {
+                return;
+            }
+
+            DocFlavor docFormat = DocFlavor.INPUT_STREAM.AUTOSENSE;
+            Doc document = new SimpleDoc(inputStream, docFormat, null);
+
+            PrintRequestAttributeSet attributeSet = new HashPrintRequestAttributeSet();
+
+            PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+
+
+            if (defaultPrintService != null) {
+                DocPrintJob printJob = defaultPrintService.createPrintJob();
+                printJob.print(document, attributeSet);
+            } else {
+                System.err.println("No existen impresoras instaladas");
+                JOptionPane.showMessageDialog(null,"No existen impresoras instaladas metodo: helpers.MetodosImprimir.imprimirComprobanteApartado()");
+            }
+        } catch (Exception e2) {
+            e2.printStackTrace();
+            JOptionPane.showMessageDialog(null,e2.getMessage(),"Error al imprimir comprobante apartado",JOptionPane.ERROR_MESSAGE);
+        }
+		
+    }
 }

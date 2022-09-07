@@ -27,6 +27,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private static AgregarDatos instanciaAgregarDatos;
     private static ActualizarProducto instanciaActualizarProducto;
     private static RegistrarClientes instanciaRegistrarClientes;
+    private static VerApartados instanciaVerApartados;
     TableModel tableModel=new TableModel();
     TablaCompras tablaCompras=new TablaCompras();
     ComprasPorApartado instanciaComprasPorApartado = new ComprasPorApartado();
@@ -82,6 +83,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         itemAgregarClientes = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
 
@@ -245,6 +247,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu3.add(itemAgregarClientes);
+
+        jMenuItem1.setText("Registrar abono de creditos");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
 
         jMenuBar1.add(jMenu3);
 
@@ -553,6 +563,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         instanciaRegistrarClientes.setVisible(true);
     }//GEN-LAST:event_itemAgregarClientesActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        if(instanciaVerApartados==null){
+            instanciaVerApartados=new VerApartados(this, rootPaneCheckingEnabled);
+        }
+        instanciaVerApartados.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -611,6 +628,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JTable jTablaProductos;
