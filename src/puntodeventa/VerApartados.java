@@ -33,6 +33,7 @@ public class VerApartados extends javax.swing.JDialog {
     TablaDetalleApartados instanciaTablaDetalleApartados=new TablaDetalleApartados();
     MetodosImprimir instanciaMetodosImprimir=new MetodosImprimir();
     
+    
     /**
      * Creates new form VerApartados
      */
@@ -402,7 +403,17 @@ public class VerApartados extends javax.swing.JDialog {
     }//GEN-LAST:event_btnIngresarAbonoActionPerformed
 
     private void btnVerRegistrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerRegistrosActionPerformed
-        // TODO add your handling code here:
+        
+        int fila=table.getSelectedRow();
+        if(fila>=0) {
+            int id_apartado=Integer.parseInt(table.getValueAt(fila,0).toString());
+            VerRegistrosApartados.idApartado=id_apartado;
+            VerRegistrosApartados instanciaVerRegistrosApartados =new VerRegistrosApartados(null,true);
+            instanciaVerRegistrosApartados.setVisible(true);
+
+        }else {
+                JOptionPane.showMessageDialog(null,"No selecciono ningun registro");
+        }
     }//GEN-LAST:event_btnVerRegistrosActionPerformed
 
     /**
