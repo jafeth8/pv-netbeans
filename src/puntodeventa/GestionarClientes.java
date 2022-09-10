@@ -160,6 +160,7 @@ public class GestionarClientes extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         jPanel1.add(jLabel1, gridBagConstraints);
 
+        textField_id.setEditable(false);
         textField_id.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
