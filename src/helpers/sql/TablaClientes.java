@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import puntodeventa.bd.ConexionBd;
 
@@ -55,6 +57,48 @@ public class TablaClientes {
             }
         }
         return idCliente;
+    }
+    
+    public void actualizarDatosClientes(String id, String nombre,String segundoNombre,String apellidos,String direccion,String numeroTelefono) {
+
+        PreparedStatement pst=null;
+        try {
+                pst = cn.prepareStatement("UPDATE clientes SET nombre='" + nombre
+                + "', segundo_nombre='" + segundoNombre + "' , apellidos='"+apellidos+"' , direccion='"+direccion+"'"
+                + " , numero_telefono='"+numeroTelefono+"' WHERE id_cliente='" + id + "'");
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(null, "datos actualizados :)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showInternalMessageDialog(null, e.getMessage(),"Error en:helpers.sql.TablaClientes.actializarDatosClientes()",JOptionPane.ERROR_MESSAGE);
+        }finally{
+            try {
+                if(pst!=null)pst.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showInternalMessageDialog(null, e.getMessage(),"Error al cerrar conexion:helpers.sql.TablaClientes.actializarDatosClientes()",JOptionPane.WARNING_MESSAGE);
+
+            }
+        }
+
+    }
+    
+    public void actualizarStateTablaClientes(int idCliente,int idState) {
+        PreparedStatement pst=null;
+        try {
+            pst = cn.prepareStatement("UPDATE clientes SET fk_id_state='"+idState+"' WHERE id_cliente='"+idCliente+"'");
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showInternalMessageDialog(null, e.getMessage(),"Error en:helpers.sql.TablaClientes.ActualizarDatosClientes()",JOptionPane.ERROR_MESSAGE);
+        }finally{
+            try {
+                pst.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showInternalMessageDialog(null, ex.getMessage(),"Error al cerrar conexion en:helpers.sql.TablaClientes.actializarDatosClientes()",JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
     
 }
