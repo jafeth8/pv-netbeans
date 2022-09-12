@@ -582,9 +582,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_itemAgregarClientesActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        if(instanciaVerApartados==null){
-            instanciaVerApartados=new VerApartados(this, rootPaneCheckingEnabled);
-        }
+        
+        instanciaVerApartados=new VerApartados(this, rootPaneCheckingEnabled);
+        
         instanciaVerApartados.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

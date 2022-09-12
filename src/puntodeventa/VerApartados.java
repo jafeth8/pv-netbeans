@@ -25,6 +25,7 @@ import validaciones_comprobaciones.ValidacionesComprobaciones;
  * @author jafeth8
  */
 public class VerApartados extends javax.swing.JDialog {
+    public static VerApartados dialog = new VerApartados(new javax.swing.JFrame(), true);
     ConexionBd cc= ConexionBd.obtenerInstancia();
     Connection cn= cc.conexion();
     
@@ -43,7 +44,7 @@ public class VerApartados extends javax.swing.JDialog {
         mostrarApartados("");
     }
     
-    private void mostrarApartados(String nombreCliente) {
+    public void mostrarApartados(String nombreCliente) {
 		
 	Statement st=null;
 	ResultSet rs=null;
@@ -106,6 +107,8 @@ public class VerApartados extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         textFieldBusqueda = new javax.swing.JTextField();
@@ -113,6 +116,14 @@ public class VerApartados extends javax.swing.JDialog {
         table = new javax.swing.JTable();
         btnIngresarAbono = new javax.swing.JButton();
         btnVerRegistros = new javax.swing.JButton();
+
+        jMenuItem1.setText("Cancelar o agregar mas productos");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Apartados");
@@ -138,6 +149,7 @@ public class VerApartados extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        table.setComponentPopupMenu(jPopupMenu1);
         scrollPane.setViewportView(table);
 
         btnIngresarAbono.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -416,6 +428,15 @@ public class VerApartados extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnVerRegistrosActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        
+        int fila=table.getSelectedRow();
+        int id_Apartado=Integer.parseInt(table.getValueAt(fila,0).toString());
+        DetalleApartados.idApartado=id_Apartado;
+        DetalleApartados instancia =new DetalleApartados(null,true);
+        instancia.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -446,7 +467,7 @@ public class VerApartados extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                VerApartados dialog = new VerApartados(new javax.swing.JFrame(), true);
+                
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -462,9 +483,11 @@ public class VerApartados extends javax.swing.JDialog {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnIngresarAbono;
     private javax.swing.JButton btnVerRegistros;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane scrollPane;
-    private javax.swing.JTable table;
+    public static javax.swing.JTable table;
     private javax.swing.JTextField textFieldBusqueda;
     // End of variables declaration//GEN-END:variables
 }
