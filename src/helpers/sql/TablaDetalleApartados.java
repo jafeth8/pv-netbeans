@@ -2,6 +2,7 @@
 package helpers.sql;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -86,5 +87,41 @@ public class TablaDetalleApartados {
             return resultado;
 
 		
-    } 
+    }
+   
+    public void insertDetalleApartados(int fkIdApartado,int fkIdProducto,float costoUnitario,float precioUnitario,float cantidad,String fechaRegistro,float descuento) throws SQLException {
+         PreparedStatement pst=null;
+         String mensajeExcepcion="";
+         boolean excepcion=false;
+         try {
+            pst= cn.prepareStatement("INSERT INTO detalle_apartados"
+            + "(fk_id_apartado,fk_id_producto,costo_unitario,precio_unitario,cantidad,fecha_registro,descuento) VALUES (?,?,?,?,?,?,?)");
+            pst.setInt(1, fkIdApartado);
+            pst.setInt(2, fkIdProducto);
+            pst.setFloat(3, costoUnitario);
+            pst.setFloat(4, precioUnitario);
+            pst.setFloat(5, cantidad);
+            pst.setString(6, fechaRegistro);
+            pst.setFloat(7, descuento);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.out.print(e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"Error al registrar en tabla detalle apartados: "+e.getMessage(),"Error en helpers.sql.TablaDetalleApartados.insertDetalleApartados()",JOptionPane.ERROR_MESSAGE);
+            excepcion=true;
+            mensajeExcepcion=e.getMessage();
+        }finally{
+            try {
+                if(pst!=null)pst.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showInternalMessageDialog(null,"Error al cerrar conexion en tabla detalle apartados: "+ex.getMessage(),"Error al cerrar conexion helpers.sql.TablaDetalleApartados.insertDetalleApartados()",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        //lanzamos excepcion ya que esta funcion es parte de una transaccion y es necesario notificar error para hacer rollback() 
+        if (excepcion) {
+            throw new SQLException(mensajeExcepcion);
+        }
+    }
+       
 }

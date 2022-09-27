@@ -204,6 +204,11 @@ public class DetalleApartados extends javax.swing.JDialog {
         });
 
         jButton2.setText("Añadir productos");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -290,7 +295,12 @@ public class DetalleApartados extends javax.swing.JDialog {
                 psEliminar = cn.prepareStatement("DELETE FROM apartados WHERE  id_apartado='"+idApartado+"'");
                 psEliminar.executeUpdate();
                 
-                cn.setAutoCommit(false);
+                
+                cn.commit();
+                JOptionPane.showMessageDialog(null,"El apartado ha sido eliminado correctamente");
+                VerApartados.dialog.mostrarApartados("");
+                dispose();
+                instanciaTableModel.mostrarDatosProductos("",VentanaPrincipal.jTablaProductos);
             }catch (SQLException e) {
                 try {
                     cn.rollback();
@@ -301,6 +311,7 @@ public class DetalleApartados extends javax.swing.JDialog {
                 }
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null,"Error en evento cancelar credito: "+e.getMessage(),"Error en evento cancelar credito: puntodeventa.DetalleApartados",JOptionPane.ERROR_MESSAGE);
+                dispose();
             }finally{
                 try {
                     cn.setAutoCommit(true);
@@ -312,12 +323,19 @@ public class DetalleApartados extends javax.swing.JDialog {
                 }
             }
             
-            JOptionPane.showMessageDialog(null,"El apartado ha sido eliminado correctamente");
-            VerApartados.dialog.mostrarApartados("");
-            dispose();
-            instanciaTableModel.mostrarDatosProductos("",VentanaPrincipal.jTablaProductos);
         }
     }//GEN-LAST:event_btnCancelarCreditoActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        int id_Apartado=Integer.parseInt(tablaRegistroApartado.getValueAt(0, 0).toString());
+        ProductosParaAniadir.idApartado=id_Apartado;
+        ProductosParaAniadir instancia=new ProductosParaAniadir(null,true);
+        instancia.setVisible(true);
+        mostrarDetalleApartado(idApartado);
+        mostrarApartado(idApartado);
+        VerApartados.dialog.mostrarApartados("");
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

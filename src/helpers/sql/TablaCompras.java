@@ -95,9 +95,9 @@ public class TablaCompras {
     public float obtenerSumatoriaSubtotalTablaTcompras(String nameTablaCompras) {
       	 
     	String sql="SELECT SUM(SUB_TOTAL) FROM "+nameTablaCompras+"";
-        float sumatoria=0;    	 
+        Float sumatoria=null;    	 
         Statement st = null;
-        ResultSet rs = null;	    
+        ResultSet rs = null;
         try {
             st = cn.createStatement();
             rs = st.executeQuery(sql);
@@ -110,7 +110,7 @@ public class TablaCompras {
         }finally {
             try {
                 if(st!=null)st.close();
-                if(st!=null)rs.close();
+                if(rs!=null)rs.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null,"helpers.sql.TablaCompras: " +ex.getMessage(),"no se pudo cerrar la conexion al obtenerSumatoria Subtotal TablaTCompras", JOptionPane.INFORMATION_MESSAGE);

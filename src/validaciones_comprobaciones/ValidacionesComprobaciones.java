@@ -4,7 +4,10 @@ package validaciones_comprobaciones;
 import helpers.sql.TablaApartados;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import puntodeventa.bd.ConexionBd;
 
@@ -106,21 +109,25 @@ public class ValidacionesComprobaciones {
     }
     
     public boolean validarCantidadAbono(String entrada,int id_apartado) {
-
         boolean resultado=true;
-
-        double precioTotal=instanciaTablaApartados.obtenerPrecioTotalTablaApartados(id_apartado);
-        double abono=Double.parseDouble(entrada);
-        double abonoTotal=instanciaTablaApartados.obtenerTotalAbonoTablaApartados(id_apartado);
-        double abonoAcumulado;
-        double deuda=instanciaTablaApartados.obtenerDeudaTablaApartados(id_apartado);
-
-        abonoAcumulado=abonoTotal+abono;
-        if(abonoAcumulado>precioTotal) {
-            JOptionPane.showMessageDialog(null, "Tan solo la deuda es de: "+deuda+" ingresa la cantidad que corresponde al abono","error",JOptionPane.ERROR_MESSAGE);
+        try {
+            
+            double precioTotal=instanciaTablaApartados.obtenerPrecioTotalTablaApartados(id_apartado);
+            double abono=Double.parseDouble(entrada);
+            double abonoTotal=instanciaTablaApartados.obtenerTotalAbonoTablaApartados(id_apartado);
+            double abonoAcumulado;
+            double deuda=instanciaTablaApartados.obtenerDeudaTablaApartados(id_apartado);
+            
+            abonoAcumulado=abonoTotal+abono;
+            if(abonoAcumulado>precioTotal) {
+                JOptionPane.showMessageDialog(null, "Tan solo la deuda es de: "+deuda+" ingresa la cantidad que corresponde al abono","error",JOptionPane.ERROR_MESSAGE);
+                resultado=false;
+            }
+              
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
             resultado=false;
         }
-
         return resultado;
    }
 }

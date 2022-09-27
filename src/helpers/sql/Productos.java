@@ -186,22 +186,29 @@ public class Productos {
         }
     }
     
-    public float obtenerCostoProductoTablaProducto(int idProducto) {
+    public float obtenerCostoProductoTablaProducto(int idProducto) throws SQLException {
    	 
     	String sql="SELECT COSTO_UNITARIO FROM productos WHERE ID = '"+idProducto+"'";
-        float costo=0;    	 
+        /*en caso de que haya un error en la tabla productos el costo no se incializara provocando asi una excepcion y evitando
+        que se complete la transaccion a la que pertenece esta funcion
+        Nota: si se va ocupar esta funcion en otra transaccion,  revisar la ubicacion de la funcion, dependiendo del flujo de la funcion en la transaccion
+        puede que lo anteriormente mencionado funcione o no.
+        */
+        Float costo=null;    	 
 	Statement st=null;
         ResultSet rs=null;
+        String mensajeExcepcion="";
+        
         try {
             st = cn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()){
-                costo=rs.getInt(1);
+                costo=rs.getFloat(1);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null,ex.getMessage(),"helpers.sql.Productos.obtenerCostoProductoTablaProducto:Error!",JOptionPane.ERROR_MESSAGE);
-
+            mensajeExcepcion=ex.getMessage();
         }finally {
             try {
                 if(st!=null)st.close();
@@ -211,7 +218,7 @@ public class Productos {
                 JOptionPane.showMessageDialog(null,"helpers.sql.Productos.obtenerCostoProductoTablaProducto: "+e.getMessage(),"No se pudo cerrar la conexion al obtener costo producto",JOptionPane.INFORMATION_MESSAGE);
             }
 	}
-        
+        if(costo==null) throw new SQLException(mensajeExcepcion);
         return costo;
     }
     
@@ -243,12 +250,13 @@ public class Productos {
         return categoria;
     }
     
-    public float obtenerCantidadTablaProducto(int idProducto) {  
-		    	 
-    	String sql="SELECT CANTIDAD FROM productos WHERE ID = '"+idProducto+"'";
+    public float obtenerCantidadTablaProducto(int idProducto) throws SQLException {  	    	 
+        String sql="SELECT CANTIDAD FROM productos WHERE ID = '"+idProducto+"'";
         float cantidad=0;    	 
 	Statement st = null;
-        ResultSet rs = null;	    
+        ResultSet rs = null;
+        String mensajeExcepcion="";
+        boolean excepcion=false;
         try {
             st = cn.createStatement();
             rs = st.executeQuery(sql);
@@ -257,8 +265,8 @@ public class Productos {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null,ex.getMessage(),"helpers.sql.Productos.obtenerCantidadTablaProducto:Error!",JOptionPane.ERROR_MESSAGE);
-
+            excepcion=true;
+            mensajeExcepcion=ex.getMessage();
         }finally {
             try {
                 if(st!=null)st.close();
@@ -268,6 +276,10 @@ public class Productos {
                 JOptionPane.showMessageDialog(null,"helpers.sql.Productos.obtenerCategoriaTablaProducto: "+e.getMessage(),"No se pudo cerrar la conexion al obtener cantidad del producto",JOptionPane.WARNING_MESSAGE);
             }
 	}
+        System.out.println("helpers.sql.Productos.obtenerCantidadTablaProducto()!!!!!!!!!");
+        //lanzamos excepcion ya que esta funcion es parte de una transaccion y es necesario notificar error para hacer rollback() 
+        if(excepcion)throw new SQLException(mensajeExcepcion);
+        
         return cantidad;
     }
     

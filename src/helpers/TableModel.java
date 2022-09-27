@@ -42,7 +42,7 @@ public class TableModel {
 
         tablaProductos.setModel(modelo);
         /*-----------------------------tamaño de columnas*------------------------------*/
-        establecerTamanioTablaProductos();
+        establecerTamanioTablaProductos(tablaProductos);
         /*----------------------------fin de tamaño para columnas----------------------*/
         String sql="";
         if(valor.equals(""))
@@ -115,7 +115,7 @@ public class TableModel {
         modelo.addColumn("CATEGORIA");
         tablaProductos.setModel(modelo);
         /*-----------------------------tamaño de columnas*------------------------------*/
-        establecerTamanioTablaProductos();
+        establecerTamanioTablaProductos(tablaProductos);
         /*----------------------------fin de tamaño para columnas----------------------*/
         String sql="";
         if(valor.equals("")){
@@ -180,7 +180,7 @@ public class TableModel {
         modelo.addColumn("CATEGORIA");
         tablaProductos.setModel(modelo);
         /*-----------------------------tamaño de columnas*------------------------------*/
-        establecerTamanioTablaProductos();
+        establecerTamanioTablaProductos(tablaProductos);
         /*----------------------------fin de tamaño para columnas----------------------*/
         String sql="";
         if(valorBuscador.equals("")){
@@ -215,9 +215,7 @@ public class TableModel {
                 modelo.addRow(datos);
             }
             tablaProductos.setModel(modelo);
-            /*tamanio de las celdas*/
-            establecerTamanioTablaProductos();
-            /*fin del tamanio de las celdas*/
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }finally {
@@ -249,29 +247,32 @@ public class TableModel {
         table.setModel(modelo);
         /*-----------------------------tamaño de columnas*------------------------------*/
         TableColumn columnaId=table.getColumn("ID");
-        columnaId.setMinWidth(60);
-        columnaId.setPreferredWidth(60);
-        columnaId.setMaxWidth(65);
+        columnaId.setMinWidth(30);
+        columnaId.setPreferredWidth(30);
+        
 
         TableColumn columnaCantidad=table.getColumn("CANTIDAD");
-        columnaCantidad.setMinWidth(100);
-        columnaCantidad.setPreferredWidth(100);
-        columnaCantidad.setMaxWidth(100);
+        columnaCantidad.setMinWidth(60);
+        columnaCantidad.setPreferredWidth(60);
+        
+        TableColumn columnaDescripcion=table.getColumn("DESCRIPCION");
+        columnaDescripcion.setMinWidth(240);
+        columnaDescripcion.setPreferredWidth(240);
 
         TableColumn columnaPrecioUnitario=table.getColumn("PRECIO UNITARIO");
-        columnaPrecioUnitario.setMinWidth(200);
-        columnaPrecioUnitario.setPreferredWidth(200);
-        columnaPrecioUnitario.setMaxWidth(200);
+        columnaPrecioUnitario.setMinWidth(60);
+        columnaPrecioUnitario.setPreferredWidth(60);
+        
 
         TableColumn columnaSubTotal=table.getColumn("SUB_TOTAL");
-        columnaSubTotal.setMinWidth(200);
-        columnaSubTotal.setPreferredWidth(200);
-        columnaSubTotal.setMaxWidth(200);
+        columnaSubTotal.setMinWidth(60);
+        columnaSubTotal.setPreferredWidth(60);
+        
 
         TableColumn columnaDescuento=table.getColumn("DESCUENTO");
-        columnaDescuento.setMinWidth(80);
-        columnaDescuento.setPreferredWidth(80);
-        columnaDescuento.setMaxWidth(85);
+        columnaDescuento.setMinWidth(60);
+        columnaDescuento.setPreferredWidth(60);
+        
 
 
         /*----------------------------fin de tamaño para columnas----------------------*/
@@ -315,40 +316,40 @@ public class TableModel {
         } 
     }
     
-    public void establecerTamanioTablaProductos() {
-        TableColumn columnaId=VentanaPrincipal.jTablaProductos.getColumn("ID");
+    public void establecerTamanioTablaProductos(JTable tablaProductos) {
+        TableColumn columnaId=tablaProductos.getColumn("ID");
         columnaId.setMinWidth(60);
         columnaId.setPreferredWidth(60);
-        columnaId.setMaxWidth(65);
+        //columnaId.setMaxWidth(65);
 
-        TableColumn columnaCodigoBarra=VentanaPrincipal.jTablaProductos.getColumn("CODIGO_BARRA");
+        TableColumn columnaCodigoBarra=tablaProductos.getColumn("CODIGO_BARRA");
         columnaCodigoBarra.setMinWidth(150);
         columnaCodigoBarra.setPreferredWidth(150);
-        columnaCodigoBarra.setMaxWidth(150);
+        //columnaCodigoBarra.setMaxWidth(150);
 
-        TableColumn columnaCantidad=VentanaPrincipal.jTablaProductos.getColumn("CANTIDAD");
+        TableColumn columnaCantidad=tablaProductos.getColumn("CANTIDAD");
         columnaCantidad.setMinWidth(60);
         columnaCantidad.setPreferredWidth(60);
-        columnaCantidad.setMaxWidth(65);
+        //columnaCantidad.setMaxWidth(65);
 
-        TableColumn columnaDescripcion=VentanaPrincipal.jTablaProductos.getColumn("DESCRIPCION");
+        TableColumn columnaDescripcion=tablaProductos.getColumn("DESCRIPCION");
         columnaDescripcion.setMinWidth(600);
         columnaDescripcion.setPreferredWidth(600);
-        columnaDescripcion.setMaxWidth(605);
+        //columnaDescripcion.setMaxWidth(605);
 
-        TableColumn columnaPrecioUnitario=VentanaPrincipal.jTablaProductos.getColumn("PRECIO UNITARIO");
+        TableColumn columnaPrecioUnitario=tablaProductos.getColumn("PRECIO UNITARIO");
         columnaPrecioUnitario.setMinWidth(120);
         columnaPrecioUnitario.setPreferredWidth(120);
-        columnaPrecioUnitario.setMaxWidth(125);
+        //columnaPrecioUnitario.setMaxWidth(125);
 
-        TableColumn columnaCostoProducto=VentanaPrincipal.jTablaProductos.getColumn("COSTO PRODUCTO");
+        TableColumn columnaCostoProducto=tablaProductos.getColumn("COSTO PRODUCTO");
         columnaCostoProducto.setMinWidth(120);
         columnaCostoProducto.setPreferredWidth(120);
-        columnaCostoProducto.setMaxWidth(125);
+        //columnaCostoProducto.setMaxWidth(125);
 
-        TableColumn columnaCategoria=VentanaPrincipal.jTablaProductos.getColumn("CATEGORIA");
+        TableColumn columnaCategoria=tablaProductos.getColumn("CATEGORIA");
         columnaCategoria.setMinWidth(140);
         columnaCategoria.setPreferredWidth(140);
-        columnaCategoria.setMaxWidth(145);	
+        //columnaCategoria.setMaxWidth(145);	
     }
 }
