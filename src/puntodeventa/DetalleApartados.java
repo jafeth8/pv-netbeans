@@ -6,6 +6,7 @@ package puntodeventa;
 
 import helpers.TableModel;
 import helpers.sql.Productos;
+import helpers.sql.TablaApartados;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -152,6 +153,8 @@ public class DetalleApartados extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaRegistroApartado = new javax.swing.JTable();
@@ -161,6 +164,14 @@ public class DetalleApartados extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         btnCancelarCredito = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+
+        jMenuItem1.setText("Quitar del apartado");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu.add(jMenuItem1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -194,6 +205,7 @@ public class DetalleApartados extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablaDetalleApartado.setComponentPopupMenu(jPopupMenu);
         jScrollPane2.setViewportView(tablaDetalleApartado);
 
         btnCancelarCredito.setText("Cancelar todo el credito");
@@ -337,6 +349,86 @@ public class DetalleApartados extends javax.swing.JDialog {
         VerApartados.dialog.mostrarApartados("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        
+        int fila=tablaDetalleApartado.getSelectedRow();
+        if(fila<0){
+            JOptionPane.showMessageDialog(null,"no selecciono un registro","Atencion!",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        PreparedStatement psTotalAndDeudaApartados=null,psActualizarProductosApartados=null,psEliminarRegistroDetalleApartados=null;
+
+        int opcion=JOptionPane.showConfirmDialog(null,"esta seguro de quitar este producto del apartado?","Aviso!!",JOptionPane.YES_NO_OPTION);
+        if(opcion==0){
+            try {
+                        
+                int idApartado=Integer.parseInt(tablaRegistroApartado.getValueAt(0, 0).toString());//perfectamente se podria utiliza la variable estatica de la clase 'idApartado'
+                TablaApartados instanciaTablaApartados=new TablaApartados();
+                Productos instanciaProductos = new Productos();
+                float deudaOriginal=instanciaTablaApartados.obtenerDeudaTablaApartados(idApartado);
+                int idProducto=Integer.parseInt(tablaDetalleApartado.getValueAt(fila,1).toString());
+                float precioUnitario=Float.parseFloat(tablaDetalleApartado.getValueAt(fila, 3).toString());
+                float cantidadDeProductosApartados=Float.parseFloat(tablaDetalleApartado.getValueAt(fila, 4).toString());
+                if(precioUnitario<deudaOriginal) {
+                    cn.setAutoCommit(false);
+                    //actualizamos el total y deuda del apartado
+                    float totalOriginal=instanciaTablaApartados.obtenerTotalTablaApartados(idApartado);
+                    float totalPrecioUnitario=precioUnitario*cantidadDeProductosApartados;
+                    float resultadoTotal=totalOriginal-totalPrecioUnitario;
+                    float resultadoDeuda=deudaOriginal-totalPrecioUnitario;
+                    psTotalAndDeudaApartados = cn.prepareStatement("UPDATE apartados SET total='"+resultadoTotal+"',deuda='"+resultadoDeuda+"' WHERE id_apartado='"+idApartado+"'");
+                    psTotalAndDeudaApartados.executeUpdate();
+                    //regresamos la cantidad de productos en la tabla PRODUCTOS
+                    double cantidadTablaProductos = instanciaProductos.obtenerCantidadTablaProducto(idProducto);
+                    double cantidadActualizada=cantidadTablaProductos+cantidadDeProductosApartados;
+                    psActualizarProductosApartados = cn.prepareStatement("UPDATE productos SET cantidad='"+cantidadActualizada+"' WHERE ID='"+idProducto+"'");
+                    psActualizarProductosApartados.executeUpdate();
+                    /* Eliminamos el registro de la tabla 'detallle_apartados' */
+                    //la columna para obtner el 'ID_DETALLE_APARTADO' se establecio OCULTA desde el metodo mostrarDetalleApartado()
+                    int id_detalle_apartado=Integer.parseInt(tablaDetalleApartado.getValueAt(fila,5).toString());
+                    psEliminarRegistroDetalleApartados = cn.prepareStatement("DELETE FROM detalle_apartados WHERE  id_detalle_apartados='"+id_detalle_apartado+"'");
+                    psEliminarRegistroDetalleApartados.executeUpdate();
+                    
+                    cn.commit();
+                    //actuliazamos las tablas
+                    JOptionPane.showMessageDialog(null,"La deuda y total de este apartado fueron actualizados");
+                    mostrarApartado(DetalleApartados.idApartado);
+                    mostrarDetalleApartado(DetalleApartados.idApartado);
+                    instanciaTableModel.mostrarDatosProductos("",VentanaPrincipal.jTablaProductos);
+                    VerApartados.dialog.mostrarApartados("");
+                    
+                }else JOptionPane.showMessageDialog(null,"no es posible quitar este elemento debido a que causaria inconsitencias en el apartado");
+						
+            } catch (Exception e) {
+                
+                e.printStackTrace();
+                try {
+                cn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null,e.getMessage(),"puntodeventa.DetalleApartados.Evento quitar producto de apartado: Error Rollback",JOptionPane.ERROR_MESSAGE);
+                }
+                JOptionPane.showMessageDialog(null,"intente nuevamente: "+e.getMessage(),"Error al quitar producto del apartado:",JOptionPane.ERROR_MESSAGE);
+            }finally{
+                try {
+                    //psTotalAndDeudaApartados,psActualizarProductosApartados,psEliminarRegistroDetalleApartados;
+                    cn.setAutoCommit(true);
+                    if(psTotalAndDeudaApartados!=null)psTotalAndDeudaApartados.close();
+                    if(psActualizarProductosApartados!=null)psActualizarProductosApartados.close();
+                    if(psEliminarRegistroDetalleApartados!=null)psEliminarRegistroDetalleApartados.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, ex.getMessage(),"puntodeventa.DetalleApartados(evento quitar producto de apartado): no se establecio"
+                    + "setAutoCommit() en true o no se pudieron cerrar conexiones",JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+
+        }else{
+            JOptionPane.showMessageDialog(null,"Operacion canceladada");
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -384,7 +476,9 @@ public class DetalleApartados extends javax.swing.JDialog {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPopupMenu jPopupMenu;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tablaDetalleApartado;
