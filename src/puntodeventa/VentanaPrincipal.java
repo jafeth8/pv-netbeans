@@ -28,6 +28,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private static ActualizarProducto instanciaActualizarProducto;
     private static RegistrarClientes instanciaRegistrarClientes;
     private static VerApartados instanciaVerApartados;
+    private static Inventario instanciaInventario;
     TableModel tableModel=new TableModel();
     TablaCompras tablaCompras=new TablaCompras();
     ComprasPorApartado instanciaComprasPorApartado = new ComprasPorApartado();
@@ -86,7 +87,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        jMenuReportes = new javax.swing.JMenu();
+        jMenuItemInventario = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -276,8 +278,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setText("REPORTES");
-        jMenuBar1.add(jMenu4);
+        jMenuReportes.setText("REPORTES");
+
+        jMenuItemInventario.setText("INVENTARIO");
+        jMenuItemInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemInventarioActionPerformed(evt);
+            }
+        });
+        jMenuReportes.add(jMenuItemInventario);
+
+        jMenuBar1.add(jMenuReportes);
 
         jMenu5.setText("CERRAR SESION");
         jMenuBar1.add(jMenu5);
@@ -600,6 +611,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         instanciaClientesEliminados.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void jMenuItemInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInventarioActionPerformed
+        
+        if(instanciaInventario==null){
+            instanciaInventario=new Inventario();
+        }
+        instanciaInventario.setVisible(rootPaneCheckingEnabled);
+    }//GEN-LAST:event_jMenuItemInventarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -655,12 +674,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTotal;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItemInventario;
+    private javax.swing.JMenu jMenuReportes;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JTable jTablaProductos;
