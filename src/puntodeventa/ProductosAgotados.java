@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import puntodeventa.bd.ConexionBd;
@@ -61,6 +62,8 @@ public class ProductosAgotados extends javax.swing.JDialog {
             
         } catch (SQLException ex) {
             ex.printStackTrace();
+            JOptionPane.showMessageDialog(null,"no se pudieron mostrar los productos agotados: "+ex.getMessage(),"Error al mostrar datos",JOptionPane.ERROR_MESSAGE);
+
             System.out.println(ex.getMessage());
         }   
     } 
