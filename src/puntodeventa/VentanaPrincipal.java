@@ -29,6 +29,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private static RegistrarClientes instanciaRegistrarClientes;
     private static VerApartados instanciaVerApartados;
     private static Inventario instanciaInventario;
+    public static Insumos instanciaInsumos;
     TableModel tableModel=new TableModel();
     TablaCompras tablaCompras=new TablaCompras();
     ComprasPorApartado instanciaComprasPorApartado = new ComprasPorApartado();
@@ -89,6 +90,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuReportes = new javax.swing.JMenu();
         jMenuItemInventario = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -287,6 +289,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenuReportes.add(jMenuItemInventario);
+
+        jMenuItem4.setText("REGISTRAR INSUMOS");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenuReportes.add(jMenuItem4);
 
         jMenuBar1.add(jMenuReportes);
 
@@ -619,6 +629,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         instanciaInventario.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_jMenuItemInventarioActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        
+        if(instanciaInsumos==null){
+            instanciaInsumos=new Insumos();
+        }
+        instanciaInsumos.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -679,6 +697,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItemInventario;
     private javax.swing.JMenu jMenuReportes;
     private javax.swing.JScrollPane jScrollPane1;
