@@ -31,6 +31,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private static Inventario instanciaInventario;
     public static Insumos instanciaInsumos;
     public static ProductosAgotados instanciaProductosAgotados;
+    public static VerVentas instanciaVerVentas;
     TableModel tableModel=new TableModel();
     TablaCompras tablaCompras=new TablaCompras();
     ComprasPorApartado instanciaComprasPorApartado = new ComprasPorApartado();
@@ -93,6 +94,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItemInventario = new javax.swing.JMenuItem();
         jMenuItemInsumos = new javax.swing.JMenuItem();
         jMenuItemProductosAgotados = new javax.swing.JMenuItem();
+        jMenuItemHistorialVentas = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -307,6 +309,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenuReportes.add(jMenuItemProductosAgotados);
+
+        jMenuItemHistorialVentas.setText("HISTORIAL VENTAS");
+        jMenuItemHistorialVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemHistorialVentasActionPerformed(evt);
+            }
+        });
+        jMenuReportes.add(jMenuItemHistorialVentas);
 
         jMenuBar1.add(jMenuReportes);
 
@@ -656,6 +666,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         instanciaProductosAgotados.setVisible(true);
     }//GEN-LAST:event_jMenuItemProductosAgotadosActionPerformed
 
+    private void jMenuItemHistorialVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHistorialVentasActionPerformed
+        
+        if(instanciaVerVentas==null){
+            instanciaVerVentas=new VerVentas();
+        }
+        instanciaVerVentas.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItemHistorialVentasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -716,6 +735,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItemHistorialVentas;
     private javax.swing.JMenuItem jMenuItemInsumos;
     private javax.swing.JMenuItem jMenuItemInventario;
     private javax.swing.JMenuItem jMenuItemProductosAgotados;
