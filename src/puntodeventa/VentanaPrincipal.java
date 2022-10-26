@@ -33,6 +33,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public static ProductosAgotados instanciaProductosAgotados;
     public static VerVentas instanciaVerVentas;
     public static VerUtilidades instanciaVerUtilidades;
+    public static VerProductosEliminados instanciaProductosEliminados;
     TableModel tableModel=new TableModel();
     TablaCompras tablaCompras=new TablaCompras();
     ComprasPorApartado instanciaComprasPorApartado = new ComprasPorApartado();
@@ -96,7 +97,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItemInsumos = new javax.swing.JMenuItem();
         jMenuItemProductosAgotados = new javax.swing.JMenuItem();
         jMenuItemHistorialVentas = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItemVerUtilidades = new javax.swing.JMenuItem();
+        jMenuItemVerProductosEliminados = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -320,13 +322,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jMenuReportes.add(jMenuItemHistorialVentas);
 
-        jMenuItem4.setText("VER UTILIDADES");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemVerUtilidades.setText("VER UTILIDADES");
+        jMenuItemVerUtilidades.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jMenuItemVerUtilidadesActionPerformed(evt);
             }
         });
-        jMenuReportes.add(jMenuItem4);
+        jMenuReportes.add(jMenuItemVerUtilidades);
+
+        jMenuItemVerProductosEliminados.setText("VER PRODUCTOS ELIMINADOS");
+        jMenuItemVerProductosEliminados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemVerProductosEliminadosActionPerformed(evt);
+            }
+        });
+        jMenuReportes.add(jMenuItemVerProductosEliminados);
 
         jMenuBar1.add(jMenuReportes);
 
@@ -685,12 +695,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItemHistorialVentasActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void jMenuItemVerUtilidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVerUtilidadesActionPerformed
         
         instanciaVerUtilidades= new VerUtilidades(this, rootPaneCheckingEnabled);
         instanciaVerUtilidades.setVisible(true);
         
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_jMenuItemVerUtilidadesActionPerformed
+
+    private void jMenuItemVerProductosEliminadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVerProductosEliminadosActionPerformed
+        // TODO add your handling code here:
+        
+        if(instanciaProductosEliminados==null){
+            instanciaProductosEliminados=new VerProductosEliminados(this, rootPaneCheckingEnabled);
+        }
+        
+        instanciaProductosEliminados.setVisible(rootPaneCheckingEnabled);
+        
+    }//GEN-LAST:event_jMenuItemVerProductosEliminadosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -752,11 +773,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItemHistorialVentas;
     private javax.swing.JMenuItem jMenuItemInsumos;
     private javax.swing.JMenuItem jMenuItemInventario;
     private javax.swing.JMenuItem jMenuItemProductosAgotados;
+    private javax.swing.JMenuItem jMenuItemVerProductosEliminados;
+    private javax.swing.JMenuItem jMenuItemVerUtilidades;
     private javax.swing.JMenu jMenuReportes;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
