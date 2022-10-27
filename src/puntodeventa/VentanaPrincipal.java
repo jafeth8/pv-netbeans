@@ -8,12 +8,17 @@ package puntodeventa;
 import helpers.Buscadores;
 import helpers.MetodosImprimir;
 import helpers.TableModel;
+import helpers.backup.RespaldoAutomatico;
+import helpers.backup.RespaldoBd;
 import helpers.compras.Carrito;
 import helpers.compras.ComprasPorApartado;
 import helpers.sql.Productos;
 import helpers.sql.TablaCompras;
 import java.awt.Graphics;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,6 +39,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public static VerVentas instanciaVerVentas;
     public static VerUtilidades instanciaVerUtilidades;
     public static VerProductosEliminados instanciaProductosEliminados;
+    private RespaldoBd instanciaRespaldoBd=new RespaldoBd();
     TableModel tableModel=new TableModel();
     TablaCompras tablaCompras=new TablaCompras();
     ComprasPorApartado instanciaComprasPorApartado = new ComprasPorApartado();
@@ -99,14 +105,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItemHistorialVentas = new javax.swing.JMenuItem();
         jMenuItemVerUtilidades = new javax.swing.JMenuItem();
         jMenuItemVerProductosEliminados = new javax.swing.JMenuItem();
+        jMenuItemcCrearRespaldo = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
             }
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -337,6 +353,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenuReportes.add(jMenuItemVerProductosEliminados);
+
+        jMenuItemcCrearRespaldo.setText("CREAR RESPALDO");
+        jMenuItemcCrearRespaldo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemcCrearRespaldoActionPerformed(evt);
+            }
+        });
+        jMenuReportes.add(jMenuItemcCrearRespaldo);
+
+        jMenuItem4.setText("REGISTRAR RUTA RESPALDO");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenuReportes.add(jMenuItem4);
 
         jMenuBar1.add(jMenuReportes);
 
@@ -713,6 +745,37 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItemVerProductosEliminadosActionPerformed
 
+    private void jMenuItemcCrearRespaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemcCrearRespaldoActionPerformed
+        try {
+            // TODO add your handling code here:
+            instanciaRespaldoBd.crearRespaldoBd();
+        } catch (IOException ex) {
+           ex.printStackTrace();
+           JOptionPane.showMessageDialog(rootPane,"Error intentelo mas tarde: "+ex.getMessage(),"Error al respaldar datos",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItemcCrearRespaldoActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        System.out.println("Ventana cerrada!!!");
+        if (instanciaRespaldoBd.registro_ruta_respaldo()) {
+            RespaldoAutomatico instancia = new RespaldoAutomatico(this, rootPaneCheckingEnabled);
+            instancia.setVisible(true);
+        }
+    }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        System.out.println("Ventana abierta");
+        if (instanciaRespaldoBd.registro_ruta_respaldo() != true) {
+            JOptionPane.showMessageDialog(this, "No hay ninguna ruta registrada para el respaldo automatico", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        
+        RutaRespaldoAutomatico instancia=new RutaRespaldoAutomatico(this, rootPaneCheckingEnabled);
+        instancia.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -773,12 +836,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItemHistorialVentas;
     private javax.swing.JMenuItem jMenuItemInsumos;
     private javax.swing.JMenuItem jMenuItemInventario;
     private javax.swing.JMenuItem jMenuItemProductosAgotados;
     private javax.swing.JMenuItem jMenuItemVerProductosEliminados;
     private javax.swing.JMenuItem jMenuItemVerUtilidades;
+    private javax.swing.JMenuItem jMenuItemcCrearRespaldo;
     private javax.swing.JMenu jMenuReportes;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
