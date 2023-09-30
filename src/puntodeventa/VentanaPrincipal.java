@@ -39,6 +39,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public static VerVentas instanciaVerVentas;
     public static VerUtilidades instanciaVerUtilidades;
     public static VerProductosEliminados instanciaProductosEliminados;
+    public static RegistrarDatosTicket instanciaRegistrarDatosTicket;
     private RespaldoBd instanciaRespaldoBd=new RespaldoBd();
     TableModel tableModel=new TableModel();
     TablaCompras tablaCompras=new TablaCompras();
@@ -106,6 +107,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItemVerProductosEliminados = new javax.swing.JMenuItem();
         jMenuItemcCrearRespaldo = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -373,6 +376,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuReportes.add(jMenuItem4);
 
         jMenuBar1.add(jMenuReportes);
+
+        jMenu1.setText("IMPRESORA");
+
+        jMenuItem5.setText("Datos de impresion");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu1);
 
         jMenu5.setText("CERRAR SESION");
         jMenuBar1.add(jMenu5);
@@ -780,6 +795,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         buscador.searchByBarCode(jTablaProductos,jtablaCompras,textFieldDescuento, codigoBarra, comboBoxBusqueda, textFieldcantidadProductos, jLabelTotal,Ruta.nametablaTcompras);
     }//GEN-LAST:event_codigoBarraActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        if(instanciaRegistrarDatosTicket==null){
+            instanciaRegistrarDatosTicket= new RegistrarDatosTicket(this, rootPaneCheckingEnabled);
+        }
+        
+        instanciaRegistrarDatosTicket.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -832,6 +855,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabelCambio;
     private javax.swing.JLabel jLabelTotal;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu5;
@@ -840,6 +864,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItemHistorialVentas;
     private javax.swing.JMenuItem jMenuItemInsumos;
     private javax.swing.JMenuItem jMenuItemInventario;
