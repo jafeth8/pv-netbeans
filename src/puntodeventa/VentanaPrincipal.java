@@ -50,7 +50,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
-        this.setContentPane(new ImagenFondo());
+        //this.setContentPane(new ImagenFondo());
         initComponents();
         tableModel.mostrarDatosProductos("", jTablaProductos);
         tableModel.datosTablaTcompras("", jtablaCompras,"tcompras");
@@ -71,7 +71,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnCredito = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         lblCantidad = new javax.swing.JLabel();
         textFieldcantidadProductos = new javax.swing.JTextField();
         comboBoxBusqueda = new javax.swing.JComboBox<>();
@@ -110,6 +109,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(102, 153, 255));
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
@@ -162,9 +162,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Stencil", 0, 48)); // NOI18N
-        jLabel2.setText("MATERIALES FABIO");
-
         lblCantidad.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblCantidad.setText("CANTIDAD:");
 
@@ -178,6 +175,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
 
         codigoBarra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        codigoBarra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                codigoBarraActionPerformed(evt);
+            }
+        });
         codigoBarra.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 codigoBarraKeyReleased(evt);
@@ -406,8 +408,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(usuarioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -438,10 +438,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(usuarioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(usuarioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -477,7 +475,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
                             .addComponent(jLabelCambio))))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -532,8 +530,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void codigoBarraKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoBarraKeyReleased
         // TODO add your handling code here:
-        Buscadores buscador =new Buscadores();
-        buscador.searchByBarCode(jTablaProductos,jtablaCompras,textFieldDescuento, codigoBarra, comboBoxBusqueda, textFieldcantidadProductos, jLabelTotal,Ruta.nametablaTcompras);
+        //Buscadores buscador =new Buscadores();
+        //buscador.searchByBarCode(jTablaProductos,jtablaCompras,textFieldDescuento, codigoBarra, comboBoxBusqueda, textFieldcantidadProductos, jLabelTotal,Ruta.nametablaTcompras);
     }//GEN-LAST:event_codigoBarraKeyReleased
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -776,6 +774,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         instancia.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void codigoBarraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoBarraActionPerformed
+        // TODO add your handling code here:
+        Buscadores buscador =new Buscadores();
+        buscador.searchByBarCode(jTablaProductos,jtablaCompras,textFieldDescuento, codigoBarra, comboBoxBusqueda, textFieldcantidadProductos, jLabelTotal,Ruta.nametablaTcompras);
+    }//GEN-LAST:event_codigoBarraActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -824,7 +828,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabelCambio;

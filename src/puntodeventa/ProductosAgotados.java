@@ -30,7 +30,7 @@ public class ProductosAgotados extends javax.swing.JDialog {
      */
     public ProductosAgotados(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.setContentPane(new ProductosAgotados.ImagenFondo());
+        //this.setContentPane(new ProductosAgotados.ImagenFondo());
         initComponents();
         mostrarProductosAgotados("");
     }

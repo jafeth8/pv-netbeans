@@ -25,7 +25,7 @@ public class ActualizarProducto extends javax.swing.JDialog {
      */
     public ActualizarProducto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.setContentPane(new ActualizarProducto.ImagenFondo());
+        //this.setContentPane(new ActualizarProducto.ImagenFondo());
         initComponents();
     }
 

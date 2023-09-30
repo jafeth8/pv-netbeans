@@ -25,7 +25,7 @@ public class AgregarDatos extends javax.swing.JFrame {
      * Creates new form AgregarDatos
      */
     public AgregarDatos() {
-        this.setContentPane(new ImagenFondo());
+        //this.setContentPane(new ImagenFondo());
         initComponents();
     }
 
