@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  */
 public class ConexionBd {
     private static ConexionBd instancia;
-	
+    
     private ConexionBd() {
 
     }

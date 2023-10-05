@@ -26,8 +26,7 @@ import validaciones_comprobaciones.ValidacionesComprobaciones;
  */
 public class VerApartados extends javax.swing.JDialog {
     public static VerApartados dialog = new VerApartados(new javax.swing.JFrame(), true);
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     
     ValidacionesComprobaciones instanciaValidaciones=new ValidacionesComprobaciones();
     TablaApartados instanciaTablaApartados = new TablaApartados();
@@ -69,6 +68,8 @@ public class VerApartados extends javax.swing.JDialog {
 
         String []datos = new String [6];
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             st = cn.createStatement();
             rs = st.executeQuery(sql);
             
@@ -231,6 +232,9 @@ public class VerApartados extends javax.swing.JDialog {
         float dineroRecibido,abono,cambio;//variables para ingresar a la tabla registro_apartados
         String fecha=null;//variable para ingresar a la tabla registro_apartados
         
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         PreparedStatement psRegistroApartados=null,psActualizarTotalAbono=null,psActualizarDeudaApartados=null
         ,psActualizarEstadoApartados=null,psFechaLiquidacion=null,psInsertVentas=null,psActualizarIdCliente=null,
         psDetalleVentas=null;
@@ -400,6 +404,7 @@ public class VerApartados extends javax.swing.JDialog {
                     if(psActualizarIdCliente!=null)psActualizarIdCliente.close();
                     if(psDetalleVentas!=null)psDetalleVentas.close();
                     if(resulsetVentas!=null)resulsetVentas.close();
+                    if(cn!=null)cn.close();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, ex.getMessage(),"puntodeventa.VerApartados(evento ingresar abono): no se establecio"

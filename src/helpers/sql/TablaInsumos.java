@@ -14,11 +14,12 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth8
  */
 public class TablaInsumos {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
-    public void insertInsumos(String descripcion,String costo, String fecha){
-        PreparedStatement pst=null;
 
+    public void insertInsumos(String descripcion,String costo, String fecha){
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
+        PreparedStatement pst=null;
+        
         try {
             pst = cn.prepareStatement("INSERT INTO insumos"
             + "(descripcion,costo,fecha) VALUES (?,?,?)");
@@ -33,6 +34,7 @@ public class TablaInsumos {
         }finally {
             try {
                 if(pst!=null)pst.close();
+                if(cn!=null)cn.close();
             }catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null,"no se cerrar conexion: "+ex.getMessage(),"Error en helpers.sql.TablaInsumos.insertInsumos()",JOptionPane.WARNING_MESSAGE);
             }
@@ -42,6 +44,8 @@ public class TablaInsumos {
     public void eliminarRegistroInsumos(int idInsumo) {
         
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             PreparedStatement pst = cn.prepareStatement("DELETE FROM insumos WHERE  id_insumo='" + idInsumo + "'");
             pst.executeUpdate();
         } catch (Exception e) {
@@ -52,6 +56,8 @@ public class TablaInsumos {
     
     public void actualizarInsumos(int idInsumo, String descripcion, double costo, String fecha) {
 
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         PreparedStatement pst=null;
         try {
             pst = cn.prepareStatement("UPDATE insumos SET descripcion='" + descripcion + "', costo='" + costo + "', fecha='" + fecha + "' WHERE id_insumo='" + idInsumo + "'");
@@ -62,6 +68,7 @@ public class TablaInsumos {
         }finally{
              try {
                 if(pst!=null)pst.close();
+                if(cn!=null)cn.close();
             }catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null,"no se cerrar conexion: "+ex.getMessage(),"Error en helpers.sql.TablaInsumos.actualizarInsumos()",JOptionPane.WARNING_MESSAGE);
             }

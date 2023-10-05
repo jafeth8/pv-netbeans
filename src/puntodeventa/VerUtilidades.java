@@ -19,8 +19,7 @@ import puntodeventa.bd.ConexionBd;
  */
 public class VerUtilidades extends javax.swing.JDialog {
     
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
 
     /**
      * Creates new form VerUtilidades
@@ -52,6 +51,8 @@ public class VerUtilidades extends javax.swing.JDialog {
 
         String[] datos = new String[5];
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
@@ -88,6 +89,8 @@ public class VerUtilidades extends javax.swing.JDialog {
 
         String[] datos = new String[6];
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
@@ -120,6 +123,8 @@ public class VerUtilidades extends javax.swing.JDialog {
 
         String[] datos = new String[3];
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {

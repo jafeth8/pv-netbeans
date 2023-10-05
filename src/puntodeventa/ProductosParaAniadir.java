@@ -26,8 +26,7 @@ import puntodeventa.bd.Ruta;
  * @author jafeth8
  */
 public class ProductosParaAniadir extends javax.swing.JDialog {
-    ConexionBd cc = ConexionBd.obtenerInstancia();
-    Connection cn = cc.conexion();
+
     public static int idApartado=0;
     TableModel instanciaTableModel= new TableModel();
     TablaCompras instanciaTablaCompras=new TablaCompras();
@@ -290,7 +289,10 @@ public class ProductosParaAniadir extends javax.swing.JDialog {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         Float totalAgregado;
         int filas=tablaProductosAgregados.getRowCount();
-
+        
+        ConexionBd cc = ConexionBd.obtenerInstancia();
+        Connection cn = cc.conexion();
+        PreparedStatement psAumentarDeudaAndTotal=null,psInsertDetalleApartados=null,psActualizaCantidadProductos=null;
         if(filas>0) {
 
             if(idApartado==0) {
@@ -300,7 +302,7 @@ public class ProductosParaAniadir extends javax.swing.JDialog {
     
             try {
                 cn.setAutoCommit(false);
-                PreparedStatement psAumentarDeudaAndTotal=null,psInsertDetalleApartados,psActualizaCantidadProductos;
+                
                 //idApartado se inicializa desde la clase 'DetalleApartados'
                 float totalOriginal =instanciaTablaApartados.obtenerTotalTablaApartados(idApartado);
                 float deudaOriginal=instanciaTablaApartados.obtenerDeudaTablaApartados(idApartado);
@@ -364,6 +366,11 @@ public class ProductosParaAniadir extends javax.swing.JDialog {
                 System.out.println("finally puntodeventa.ProductosParaAniadir.jButton1ActionPerformed()");
                 try {
                     cn.setAutoCommit(true);
+                    //PreparedStatement psAumentarDeudaAndTotal=null,psInsertDetalleApartados,psActualizaCantidadProductos;
+                    if(psAumentarDeudaAndTotal!=null)psAumentarDeudaAndTotal.close();
+                    if(psInsertDetalleApartados!=null)psInsertDetalleApartados.close();
+                    if(psActualizaCantidadProductos!=null)psActualizaCantidadProductos.close();
+                    if(cn!=null)cn.close();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                     JOptionPane.showInternalMessageDialog(null,"fallo al establecer autocommit en true en el evento para agregar productos al apartado "+ex.getMessage(),"autocommit en true fallo  puntodeventa.ProductosParaAniadir", JOptionPane.WARNING_MESSAGE);

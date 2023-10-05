@@ -18,8 +18,7 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth8
  */
 public class GanaciasPorCategoria extends javax.swing.JFrame {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     
     /**
      * Creates new form GanaciasPorCategoria
@@ -50,6 +49,8 @@ public class GanaciasPorCategoria extends javax.swing.JFrame {
         }
 
         String[] datos = new String[6];
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);

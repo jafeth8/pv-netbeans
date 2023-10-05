@@ -24,8 +24,7 @@ import puntodeventa.bd.ConexionBd;
  */
 public class DetalleApartados extends javax.swing.JDialog {
     public static int idApartado=0;
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     TableModel instanciaTableModel=new TableModel();
     Productos instanciaTablaProductos=new Productos();
     /**
@@ -39,6 +38,8 @@ public class DetalleApartados extends javax.swing.JDialog {
     }
     
     public void mostrarApartado(int id_apartado){
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         DefaultTableModel modelo= new DefaultTableModel();
         modelo.addColumn("Id Apartado");
         modelo.addColumn("Id Cliente");
@@ -80,6 +81,7 @@ public class DetalleApartados extends javax.swing.JDialog {
             try {
                 if(st!=null)st.close();
                 if(rs!=null)rs.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Error al cerrar conexion: "+ex.getMessage(),"Error de conexion: puntodeventa.DetalleApartados.mostrarApartado()", JOptionPane.WARNING_MESSAGE);
@@ -89,6 +91,10 @@ public class DetalleApartados extends javax.swing.JDialog {
     }
     
     public void mostrarDetalleApartado(int id){
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
+        
         DefaultTableModel modelo= new DefaultTableModel();
         modelo.addColumn("Id Apartado");
         modelo.addColumn("Id Producto");
@@ -136,6 +142,7 @@ public class DetalleApartados extends javax.swing.JDialog {
             try {
                 if(st!=null)st.close();
                 if(rs!=null)rs.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Error al cerrar conexion: "+ex.getMessage(),"Error de conexion: puntodeventa.DetalleApartados.mostrarDetalleApartado()", JOptionPane.WARNING_MESSAGE);
@@ -281,6 +288,8 @@ public class DetalleApartados extends javax.swing.JDialog {
 
     private void btnCancelarCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarCreditoActionPerformed
         
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         int confirmar;
         int idProducto;
         float cantidadProductosApartados;
@@ -329,9 +338,10 @@ public class DetalleApartados extends javax.swing.JDialog {
                     cn.setAutoCommit(true);
                     if(psActualizar!=null)psActualizar.close();
                     if(psEliminar!=null)psEliminar.close();
+                    if(cn!=null)cn.close();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null,"No se pudo cerrar conexion en evento cancelar credito: "+ex.getMessage(),"Error al cerrar conexion en  evento cancelar credito: puntodeventa.DetalleApartados",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"no se establecio setAutoCommit() en true o No se pudo cerrar conexion en evento cancelar credito: "+ex.getMessage(),"Error al cerrar conexion en  evento cancelar credito: puntodeventa.DetalleApartados",JOptionPane.WARNING_MESSAGE);
                 }
             }
             
@@ -357,6 +367,8 @@ public class DetalleApartados extends javax.swing.JDialog {
             return;
         }
         
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         PreparedStatement psTotalAndDeudaApartados=null,psActualizarProductosApartados=null,psEliminarRegistroDetalleApartados=null;
 
         int opcion=JOptionPane.showConfirmDialog(null,"esta seguro de quitar este producto del apartado?","Aviso!!",JOptionPane.YES_NO_OPTION);
@@ -417,6 +429,7 @@ public class DetalleApartados extends javax.swing.JDialog {
                     if(psTotalAndDeudaApartados!=null)psTotalAndDeudaApartados.close();
                     if(psActualizarProductosApartados!=null)psActualizarProductosApartados.close();
                     if(psEliminarRegistroDetalleApartados!=null)psEliminarRegistroDetalleApartados.close();
+                    if(cn!=null)cn.close();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, ex.getMessage(),"puntodeventa.DetalleApartados(evento quitar producto de apartado): no se establecio"

@@ -19,12 +19,13 @@ import puntodeventa.bd.ConexionBd;
  */
 public class DatosTicket {
     
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     
     public void registrarDatos(String id,String establecimiento,String direccion, String telefono,String localidad,String estado) {
         PreparedStatement pst=null;
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             pst = cn.prepareStatement("INSERT INTO datos_ticket" + "(id,establecimiento,direccion,"
             +"telefono,localidad,estado) VALUES (?,?,?,?,?,?)");
             pst.setString(1, id);
@@ -52,6 +53,8 @@ public class DatosTicket {
 
         PreparedStatement pst=null;
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             pst = cn.prepareStatement("UPDATE datos_ticket SET establecimiento='" + establecimiento
             + "', direccion='" + direccion + "' , telefono='"+telefono+"' , localidad='"+localidad+"'"
             + " , estado='"+estado+"' WHERE id='" +1+ "'");
@@ -75,6 +78,8 @@ public class DatosTicket {
     public boolean datos_ticket_registrado() {
         try {
             String sql = "SELECT * FROM datos_ticket";
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             Statement st = cn.createStatement();
             ResultSet resultadosConsulta = st.executeQuery(sql);
             if (resultadosConsulta.next()) {
@@ -96,6 +101,8 @@ public class DatosTicket {
         Statement st = null;
         ResultSet rs = null;
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             st = cn.createStatement();
             rs = st.executeQuery(sql);
             while (rs.next()) {

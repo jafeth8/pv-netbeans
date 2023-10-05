@@ -17,13 +17,19 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth888
  */
 public class TableModel {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     public TableModel() {
         
     }
     
+    
+    //este metodo no cierra la conexion de tipo Connection debido a que esta dentro de una transaccion u otro metodo que esta 
+    //utilizando dicha conexion, esta debe de cerrarse al final del proceso de la transaccion u metodo que este utilizando
+    //este metodo mostrarDatosProductos y no dentro de este ya que estaria cerrando la conexion premamaturamente lo cual causaria errores.
     public void mostrarDatosProductos(String valor,JTable tablaProductos){
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
 		  
         DefaultTableModel modelo= new DefaultTableModel() {
             @Override
@@ -90,7 +96,7 @@ public class TableModel {
         }finally{
             try {
                 if(st!=null)st.close();
-                if(rs!=null)rs.close();
+                if(rs!=null)rs.close();      
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),"Error Close conexion TableModel.mostrarDatosProductos",JOptionPane.INFORMATION_MESSAGE);
@@ -117,6 +123,8 @@ public class TableModel {
         /*-----------------------------tamaño de columnas*------------------------------*/
         establecerTamanioTablaProductos(tablaProductos);
         /*----------------------------fin de tamaño para columnas----------------------*/
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         String sql="";
         if(valor.equals("")){
           sql="SELECT ID,CODIGO_BARRA,CANTIDAD,DESCRIPCION,PRECIO_UNITARIO,COSTO_UNITARIO,CATEGORIA FROM productos WHERE fk_id_state=1";
@@ -156,6 +164,7 @@ public class TableModel {
             try {
                 if(st!=null)st.close();
                 if(rs!=null)rs.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),"Error Close conexion TableModel.mostrarDatosCategorias",JOptionPane.INFORMATION_MESSAGE);
@@ -182,6 +191,8 @@ public class TableModel {
         /*-----------------------------tamaño de columnas*------------------------------*/
         establecerTamanioTablaProductos(tablaProductos);
         /*----------------------------fin de tamaño para columnas----------------------*/
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         String sql="";
         if(valorBuscador.equals("")){
             //sql="SELECT CODIGO_BARRA,CANTIDAD,DESCRIPCION,PRECIO_UNITARIO FROM productos";
@@ -276,6 +287,10 @@ public class TableModel {
 
 
         /*----------------------------fin de tamaño para columnas----------------------*/
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
+        
         String sql="";
         if(valor.equals(""))
         {

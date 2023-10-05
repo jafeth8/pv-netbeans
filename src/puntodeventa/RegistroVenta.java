@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.print.Doc;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
@@ -30,8 +32,7 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth8
  */
 public class RegistroVenta extends javax.swing.JFrame {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     public static int idVenta=0;
     /**
      * Creates new form RegistroVenta
@@ -60,7 +61,10 @@ public class RegistroVenta extends javax.swing.JFrame {
                 + " LEFT JOIN clientes ON ventas.fk_id_cliente=clientes.id_cliente WHERE ventas.id_venta=" + ventaId + "";
 
         String[] datos = new String[7];
+
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
@@ -100,7 +104,10 @@ public class RegistroVenta extends javax.swing.JFrame {
                 + "JOIN productos ON detalle_ventas.fk_id_producto=productos.ID WHERE fk_id_venta=" + id + "";
 
         String[] datos = new String[6];
+        
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {

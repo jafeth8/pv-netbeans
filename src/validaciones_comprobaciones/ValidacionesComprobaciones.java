@@ -16,39 +16,64 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth888
  */
 public class ValidacionesComprobaciones {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     TablaApartados instanciaTablaApartados=new TablaApartados();
+    
+    //este mtetodo trabaja en conjunto con otras operaciones sql en la ventana AgregarDatos favor de no cerrar objeto Connection
     public boolean validarProductos(String cod,String des){
     	boolean existe=false;
+        Statement st=null;
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         try{
-    	    Statement st=null;
     	    st=cn.createStatement();
             ResultSet resultadosConsulta = st.executeQuery ("SELECT * FROM productos WHERE CODIGO_BARRA='"+cod+"'AND DESCRIPCION='"+des+"'");
             if( resultadosConsulta.first())existe=true;                          
         } catch (Exception e){
             e.printStackTrace();
             JOptionPane.showMessageDialog(null,e.getMessage(),"Error al verificar existencia de producto",JOptionPane.ERROR_MESSAGE);
+        }finally{
+            try {
+                if(st!=null) st.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, ex.getMessage(),"Error al cerrar conexion en validaciones_comprobaciones.ValidacionesComprobaciones.validarProductos()"
+                    ,JOptionPane.INFORMATION_MESSAGE);
+            }
         }
         return existe;
     }
     
+    //este mtetodo trabaja en conjunto con otras operaciones sql en la ventana AgregarDatos favor de no cerrar objeto Connection
     public boolean codigoDeBarrasYaExistente(String des){
         boolean existe=false;
+        Statement st=null;
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         try{
-    	    Statement st=null;
     	    st=cn.createStatement();
             ResultSet resultadosConsulta = st.executeQuery ("SELECT * FROM productos WHERE CODIGO_BARRA='"+des+"'");
             if( resultadosConsulta.first() )existe=true;                         
 	} catch (Exception e){
             e.printStackTrace();
             JOptionPane.showMessageDialog(null,e.getMessage(),"Error al verificar existencia de codigo de barras",JOptionPane.ERROR_MESSAGE);
+        }finally{
+            try {
+                if(st!=null) st.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, ex.getMessage(),"Error al cerrar conexion en validaciones_comprobaciones.ValidacionesComprobaciones.codigoDeBarrasYaExistente()"
+                    ,JOptionPane.INFORMATION_MESSAGE);
+            }
         }
         return existe;
     }
-    
+    //este mtetodo trabaja en conjunto con otras operaciones sql en la ventana AgregarDatos favor de no cerrar objeto Connection
     public boolean descripcionProductoYaExistente(String des){
         boolean existe=false;
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
     	try{
     	    Statement st=null;
     	    st=cn.createStatement();

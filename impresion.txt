@@ -1,16 +1,16 @@
      =======================================================                    
-     tec inovation paracho              Francisco i madero col san juan         
-          Paracho,Mich                  Tel. 423-525-1013                       
-Fecha: 30/9/2023                        Hora18:35:56                            
+     construcciones Silva               5 de mayo No 20                         
+          auhiran,Mich                  Tel. 452-284-19-66                      
+Fecha: 4/10/2023                        Hora15:30:44                            
 Cant.   Producto    P/U   Sub.T                                                 
 1.0  aerosol oro    75.0                                    75.0                
                                                                                 
-     Cotizacion  :  $75.0                                                       
-     !Formato de cotizacion!                                                    
-     tec inovation paracho                                                      
-   Cotizado por : jLabel1                                                       
+     Subtotal:      $75.0                                                       
+     Total a pagar: $75.0                                                       
+     Efectivo :     $100                                                        
+     Cambio :       $$ 25.0                                                     
+     !Gracias por su Compra!                                                    
+     construcciones Silva                                                       
+  Atendido por : jLabel1                                                        
    ===================================================================          
-                                                                                
-                                                                                
-                                                                                
                                                                                 

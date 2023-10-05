@@ -16,12 +16,14 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth8
  */
 public class TablaDetalleApartados {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     private int cantidadRegistros (int idApartado) {
         //SELECT COUNT(fk_id_apartado) FROM detalle_apartados WHERE fk_id_apartado=24
         String sql="SELECT COUNT(fk_id_apartado) FROM detalle_apartados WHERE fk_id_apartado= '"+idApartado+"'";
-        int cantidad=0;    	 
+        int cantidad=0;
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         Statement st = null;
         ResultSet rs = null;
         try {
@@ -46,6 +48,7 @@ public class TablaDetalleApartados {
         return cantidad;
     }
     
+    //este metodo estta dentro de una transaaccion favor de no cerrar conexiones
     public String[][] obtenerDatosDetalleApartados(int idApartado) throws SQLException {
 	
         String sql;
@@ -54,6 +57,10 @@ public class TablaDetalleApartados {
         sql="SELECT fk_id_producto,costo_unitario,precio_unitario,cantidad,descuento FROM detalle_apartados WHERE fk_id_apartado="+idApartado+"";
 
             int contadorRegistro=0;
+            
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
+            
             Statement st = null;
             ResultSet rs = null;
             try {
@@ -89,7 +96,11 @@ public class TablaDetalleApartados {
 		
     }
    
+    
+    //muy probablemente esta funcion no se esta usando
     public void insertDetalleApartados(int fkIdApartado,int fkIdProducto,float costoUnitario,float precioUnitario,float cantidad,String fechaRegistro,float descuento) throws SQLException {
+         ConexionBd cc= ConexionBd.obtenerInstancia();
+         Connection cn= cc.conexion();
          PreparedStatement pst=null;
          String mensajeExcepcion="";
          boolean excepcion=false;

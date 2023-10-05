@@ -16,13 +16,15 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth8
  */
 public class TablaClientes {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     public int registrarClientes(String nombre,String segundoNombre,String apellidos,String direccion, String numero,String tipocliente){
         
         String query="INSERT INTO clientes (nombre,segundo_nombre,apellidos,"
                 + "direccion,numero_telefono,fk_id_tipo_cliente)"
                 + " VALUES(?,?,?,?,?,?)";
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         PreparedStatement psClientes=null;
         int idCliente=0;
         ResultSet resultadoId=null;
@@ -50,6 +52,7 @@ public class TablaClientes {
             try {
                 if(psClientes!=null) psClientes.close();
                 if(resultadoId!=null) resultadoId.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),"Error al cerrar conexion al registrar cliente"
@@ -62,6 +65,8 @@ public class TablaClientes {
     public void actualizarDatosClientes(String id, String nombre,String segundoNombre,String apellidos,String direccion,String numeroTelefono) {
 
         PreparedStatement pst=null;
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         try {
                 pst = cn.prepareStatement("UPDATE clientes SET nombre='" + nombre
                 + "', segundo_nombre='" + segundoNombre + "' , apellidos='"+apellidos+"' , direccion='"+direccion+"'"
@@ -74,6 +79,7 @@ public class TablaClientes {
         }finally{
             try {
                 if(pst!=null)pst.close();
+                if(cn!=null)cn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 JOptionPane.showInternalMessageDialog(null, e.getMessage(),"Error al cerrar conexion:helpers.sql.TablaClientes.actializarDatosClientes()",JOptionPane.WARNING_MESSAGE);
@@ -85,6 +91,9 @@ public class TablaClientes {
     
     public void actualizarStateTablaClientes(int idCliente,int idState) {
         PreparedStatement pst=null;
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         try {
             pst = cn.prepareStatement("UPDATE clientes SET fk_id_state='"+idState+"' WHERE id_cliente='"+idCliente+"'");
             pst.executeUpdate();
@@ -93,7 +102,8 @@ public class TablaClientes {
             JOptionPane.showInternalMessageDialog(null, e.getMessage(),"Error en:helpers.sql.TablaClientes.ActualizarDatosClientes()",JOptionPane.ERROR_MESSAGE);
         }finally{
             try {
-                pst.close();
+                if(pst!=null)pst.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showInternalMessageDialog(null, ex.getMessage(),"Error al cerrar conexion en:helpers.sql.TablaClientes.actializarDatosClientes()",JOptionPane.ERROR_MESSAGE);

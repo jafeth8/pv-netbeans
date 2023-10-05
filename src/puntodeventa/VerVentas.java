@@ -19,8 +19,7 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth8
  */
 public class VerVentas extends javax.swing.JFrame {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     TablaVentas instanciaTablaVentas=new TablaVentas();
     private RegistroVenta instanciaRegistroVenta;
     
@@ -51,6 +50,8 @@ public class VerVentas extends javax.swing.JFrame {
 
         String[] datos = new String[6];
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
@@ -99,6 +100,8 @@ public class VerVentas extends javax.swing.JFrame {
 
         String[] datos = new String[9];
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {

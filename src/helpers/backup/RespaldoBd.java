@@ -20,8 +20,7 @@ import puntodeventa.bd.Ruta;
  * @author jafeth8
  */
 public class RespaldoBd {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     public void crearRespaldoBd() throws IOException {
 
         Process p = Runtime.getRuntime().exec("mysqldump -u root " + Ruta.DATABASE + "");
@@ -54,6 +53,8 @@ public class RespaldoBd {
     
     public boolean registro_ruta_respaldo() {
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             String sql = "SELECT * FROM ruta_respaldo";
             Statement st = cn.createStatement();
             ResultSet resultadosConsulta = st.executeQuery(sql);
@@ -76,6 +77,8 @@ public class RespaldoBd {
         String categoria = "";
 
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
@@ -95,6 +98,8 @@ public class RespaldoBd {
 
     public void registrarRutaRespaldo(String ruta) {
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             PreparedStatement pst = cn.prepareStatement("INSERT INTO ruta_respaldo" + "(ruta) VALUES (?)");
             pst.setString(1, ruta);
             pst.executeUpdate();
@@ -105,9 +110,10 @@ public class RespaldoBd {
     }
     
     public void actualizar_RutaRespaldo(String ruta) {
-        PreparedStatement pst;
         try {
-            pst = cn.prepareStatement("UPDATE ruta_respaldo SET ruta=? WHERE id='1'");
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
+            PreparedStatement pst = cn.prepareStatement("UPDATE ruta_respaldo SET ruta=? WHERE id='1'");
             pst.setString(1, ruta);
             pst.executeUpdate();
         } catch (SQLException e) {

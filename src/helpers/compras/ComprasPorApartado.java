@@ -18,12 +18,15 @@ import puntodeventa.bd.ConexionBd;
  */
 public class ComprasPorApartado {
 
-    ConexionBd cc = ConexionBd.obtenerInstancia();
-    Connection cn = cc.conexion();
+
 
     public boolean apartarProductos(JTable tablaCompras,int idCliente, float total, String fechaApartado, float deudaInicial, String estado) {
         Productos instanciaProductos=new Productos();
         boolean exito=true;
+        
+        ConexionBd cc = ConexionBd.obtenerInstancia();
+        Connection cn = cc.conexion();
+        
         try {
             cn.setAutoCommit(false);
         } catch (SQLException e) {
@@ -102,6 +105,7 @@ public class ComprasPorApartado {
                 if(psInsertDetalleApartados!=null)psInsertDetalleApartados.close();
                 if(psActualizarCantidadProductos!=null)psActualizarCantidadProductos.close();
                 if(resultado!=null)resultado.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),"helpers.compras.ComprarPorApartado.apartarProductos(): no se establecio"

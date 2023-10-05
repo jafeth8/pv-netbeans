@@ -15,14 +15,16 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth8
  */
 public class TablaVentas {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     public float obtenerGanaciasPorDia(String fecha) {
         //String sql="SELECT SUM(total_venta) FROM `ventas`WHERE fecha_venta='2021-01-22'"
         //String sql="SELECT SUM(total_venta) FROM `ventas` WHERE fecha_venta='"+fecha+"'";
         String sql = "SELECT SUM(detalle_ventas.precio_unitario*detalle_ventas.cantidad)-SUM(detalle_ventas.costo_unitario*detalle_ventas.cantidad) FROM "
         + "ventas JOIN detalle_ventas ON id_venta=detalle_ventas.fk_id_venta WHERE ventas.fecha_venta='" + fecha + "'";
         float ganancia = 0;
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         Statement st = null;
         ResultSet rs = null;
         try {
@@ -38,6 +40,7 @@ public class TablaVentas {
             try {
                 if(st!=null)st.close();
                 if(rs!=null)rs.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null,"No se pudo cerrar conexion: "+ex.getMessage(),"Error en helpers.sql.TablaVentas.obtenerGanaciasPorDia()", JOptionPane.WARNING_MESSAGE);

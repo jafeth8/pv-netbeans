@@ -18,8 +18,7 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth8
  */
 public class VerProductosEliminados extends javax.swing.JDialog {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     Productos instanciaTablaProductos=new Productos();
     
     /**
@@ -49,9 +48,12 @@ public class VerProductosEliminados extends javax.swing.JDialog {
             sql = "SELECT ID,CODIGO_BARRA,CANTIDAD,DESCRIPCION,PRECIO_UNITARIO,COSTO_UNITARIO FROM productos WHERE descripcion like '%" + valor + "%' AND fk_id_state=3 ";
             //sql="SELECT CODIGO_BARRA,CANTIDAD,DESCRIPCION,PRECIO_UNITARIO FROM productos WHERE descripcion like '%"+valor+"%'";
         }
+        
 
         Object[] datos = new Object[6];
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {

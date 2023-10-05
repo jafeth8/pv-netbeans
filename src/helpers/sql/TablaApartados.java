@@ -16,11 +16,16 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth8
  */
 public class TablaApartados {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
+    
+    //este metodo no cierra la conexion de tipo Connection debido a que esta dentro de una transaccion u otro metodo que esta 
+    //utilizando dicha conexion, esta debe de cerrarse al final del proceso de la transaccion u metodo que este utilizando
+    //este metodo obtenerPrecioTotalTablaApartados y no dentro de este ya que estaria cerrando la conexion premamaturamente lo cual causaria errores.
     public float obtenerPrecioTotalTablaApartados(int id_apartado) {
         String sql="SELECT total FROM apartados WHERE id_apartado = '"+id_apartado+"'";
         float total = 0;
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         Statement st =null;
         ResultSet rs =null;
         try {
@@ -44,7 +49,12 @@ public class TablaApartados {
         return total;
     }
     
+    //este metodo no cierra la conexion de tipo Connection debido a que esta dentro de una transaccion u otro metodo que esta 
+    //utilizando dicha conexion, esta debe de cerrarse al final del proceso de la transaccion u metodo que este utilizando
+    //este metodo obtenerTotalAbonoTablaApartados y no dentro de este ya que estaria cerrando la conexion premamaturamente lo cual causaria errores.
     public float obtenerTotalAbonoTablaApartados(int id_apartado) {
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         String sql="SELECT total_abono FROM apartados WHERE id_apartado = '"+id_apartado+"'";
         float total = 0;
         Statement st = null;
@@ -70,9 +80,15 @@ public class TablaApartados {
         return total;
     }
     
+    
+    //este metodo no cierra la conexion de tipo Connection debido a que esta dentro de una transaccion u otro metodo que esta 
+    //utilizando dicha conexion, esta debe de cerrarse al final del proceso de la transaccion u metodo que este utilizando
+    //este metodo obtenerDeudaTablaApartados y no dentro de este ya que estaria cerrando la conexion premamaturamente lo cual causaria errores.
     public float obtenerDeudaTablaApartados(int id_apartado) throws SQLException {
         String sql="SELECT deuda FROM apartados WHERE id_apartado = '"+id_apartado+"'";
         Float total = null;
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         Statement st = null;
         ResultSet rs = null;
         boolean excepcion=false;
@@ -104,9 +120,16 @@ public class TablaApartados {
         return total;
     }
     
+    
+    //este metodo no cierra la conexion de tipo Connection debido a que esta dentro de una transaccion u otro metodo que esta 
+    //utilizando dicha conexion, esta debe de cerrarse al final del proceso de la transaccion u metodo que este utilizando
+    //este metodo obtenerTotalTablaApartados y no dentro de este ya que estaria cerrando la conexion premamaturamente lo cual causaria errores.
     public float obtenerTotalTablaApartados(int idApartado) throws SQLException {
         String sql="SELECT total FROM apartados WHERE id_apartado = '"+idApartado+"'";
-        Float costo=null;    	 
+        Float costo=null;
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         Statement st = null;
         ResultSet rs = null;
         boolean excepcion=false;
@@ -138,9 +161,12 @@ public class TablaApartados {
         return costo;
     }
     
+    //probablemente este metodo no se esta usando 
     public void aumentarTotal_y_DeudaTablaApartados(int idApartado,float totalOriginal,float deudaOriginal,float totalAgregado) throws SQLException {
     	float resultadoTotal=totalOriginal+totalAgregado;
     	float resultadoDeuda=deudaOriginal+totalAgregado;
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
     	PreparedStatement pst=null;
         boolean excepcion=false;
         String mensajeExcepcion="";

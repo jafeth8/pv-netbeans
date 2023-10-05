@@ -6,6 +6,7 @@ package puntodeventa;
 
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
+import helpers.sql.DatosTicket;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -15,6 +16,7 @@ import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.print.Doc;
@@ -36,9 +38,13 @@ import puntodeventa.bd.ConexionBd;
 public class VerRegistrosApartados extends javax.swing.JDialog {
     
     public static int idApartado=0;
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
-
+    DatosTicket instanciaTicket=new DatosTicket();
+    HashMap<String, String> hashDatosTicket=instanciaTicket.obtenerDatos("1");
+    String establecimiento=hashDatosTicket.get("establecimiento");
+    String direccion=hashDatosTicket.get("direccion");
+    String telefono=hashDatosTicket.get("telefono");
+    String localidad=hashDatosTicket.get("localidad");
+    String estado= hashDatosTicket.get("estado");
     /**
      * Creates new form VerRegistrosApartados
      */
@@ -69,7 +75,10 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
         String []datos = new String [7];
         Statement st = null;
         ResultSet rs = null;
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         try {
+
             st = cn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()){
@@ -92,6 +101,7 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
             try {
                 if(rs!=null)rs.close();
                 if(st!=null)st.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),"No se puedo cerrar conexion al mostrar encabezado de apartado", HEIGHT);
@@ -115,6 +125,8 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
         String []datos = new String [6];
         Statement st = null;
         ResultSet rs = null;
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         try {
             st = cn.createStatement();
             rs = st.executeQuery(sql);
@@ -136,6 +148,7 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
             try {
                 if(rs!=null)rs.close();
                 if(st!=null)st.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),"No se puedo cerrar conexion al mostrar detalles de apartado", HEIGHT);
@@ -146,6 +159,8 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
     private void mostrarRegistroApartado(int idApartado) {
         Statement st=null;
         ResultSet rs=null;
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
     	DefaultTableModel modelo= new DefaultTableModel();
         modelo.addColumn("Id apartado");
         modelo.addColumn("Dinero recibido");
@@ -178,6 +193,7 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
             try {
                 if(rs!=null)rs.close();
                 if(st!=null)st.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),"No se puedo cerrar conexion al mostrar registros de abono de apartado", HEIGHT);
@@ -186,8 +202,11 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
     }
     
     public void imprimircomprobante(){
+        
+        
+        
         int fila=table.getSelectedRow();
-
+        
         String dinerorecibido = table.getValueAt(fila, 1).toString();
         String abono = table.getValueAt(fila, 2).toString();
         String cambio  =  table.getValueAt(fila, 3).toString();
@@ -208,10 +227,10 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
             //Imprimir = 1ra linea de la columa de 1 a 32
 
             printer.printTextWrap(0, 1, 5, 80, "=======================================================");
-            printer.printTextWrap(1, 1, 40, 80, "La soledad No 6"); //Nombre establecimiento
-            printer.printTextWrap(1, 1, 5, 80, "Materiales Fabio"); //Barrio
-            printer.printTextWrap(2, 1, 40, 80, "Tel. 423-525-0138"); //Direccion
-            printer.printTextWrap(2, 1, 10, 80, "Aranza,Mich."); //Codigo Postal
+            printer.printTextWrap(1, 1, 40, 80, direccion); 
+            printer.printTextWrap(1, 1, 5, 80, establecimiento);
+            printer.printTextWrap(2, 1, 40, 80, "Tel. "+telefono);
+            printer.printTextWrap(2, 1, 10, 80, localidad+","+estado);
             printer.printTextWrap(3, 1, 0, 40, "Fecha: "+fecha);
 
             printer.printTextWrap(4, 1, 0, 40, "Dinero Recibido: "+dinerorecibido);
@@ -291,10 +310,10 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
 
             //Imprimir = 1ra linea de la columa de 1 a 32
             printernew.printTextWrap(0, 1, 5, 80, "=======================================================");
-            printernew.printTextWrap(1, 1, 40, 80, "La soledad No 6"); //Nombre establecimiento
-            printernew.printTextWrap(1, 1, 5, 80, "Materiales  Fabio"); //Barrio
-            printernew.printTextWrap(2, 1, 40, 80, "Tel. 423-525-0138"); //Direccion
-            printernew.printTextWrap(2, 1, 10, 80, "Aranza,Mich."); //Codigo Postal
+            printernew.printTextWrap(1, 1, 40, 80, direccion);
+            printernew.printTextWrap(1, 1, 5, 80, establecimiento);
+            printernew.printTextWrap(2, 1, 40, 80, "Tel. "+telefono);
+            printernew.printTextWrap(2, 1, 10, 80, localidad+","+estado);
 
             printernew.printTextWrap(3, 1, 0, 40, "Fecha: "+dia+"/"+mes+"/"+anio); //Aqui va la fecha de recibo
             printernew.printTextWrap(3, 1, 40, 80, "Hora"+hora+":"+minuto+":"+segundo); //Aqui va la hora de recibo
@@ -339,7 +358,7 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
 
             //printer.printTextWrap(filas+21, 1, 5, 80, "������������������������������������������������������������������");
             printernew.printTextWrap(filas+10, 1, 5,80, "!Gracias por su Compra!");
-            printernew.printTextWrap(filas+11, 1, 5, 80, "Materiales Fabio");
+            printernew.printTextWrap(filas+11, 1, 5, 80, establecimiento);
             //printer.printTextWrap(filas+12, 1, 2, 80, "Atendido por : "+UsuarioLabel.getText());
             //printer.printTextWrap(filas+13, 1, 3, 80, "Contacto: workitapp@gmail.com");
             printernew.printTextWrap(filas+12, 1, 3,80, "===================================================================");

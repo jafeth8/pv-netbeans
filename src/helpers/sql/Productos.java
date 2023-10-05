@@ -20,10 +20,14 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth888
  */
 public class Productos {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     public int registrarProducto(String codigoBarra,String cantidad, String descripcion,String precioUnitario,String costoUnitario,
         String categoria){
+        
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
+        
         
         String query="INSERT INTO productos (CODIGO_BARRA,CANTIDAD,DESCRIPCION,PRECIO_UNITARIO,"
                 + " COSTO_UNITARIO,CATEGORIA)"
@@ -55,6 +59,7 @@ public class Productos {
             try {
                 if(psProductos!=null) psProductos.close();
                 if(resultadoId!=null) resultadoId.close();
+                if(cn!=null) cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),"Error al cerrar conexion al registrar producto"
@@ -67,6 +72,9 @@ public class Productos {
      public int ActualizarProducto(String codigoBarra,String cantidad, String descripcion,String precioUnitario,String costoUnitario,
         String categoria){
         
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();  
+         
         String query="UPDATE productos SET CANTIDAD=?,DESCRIPCION=?,PRECIO_UNITARIO=?,"
             + " COSTO_UNITARIO=?,CATEGORIA=?"+ " WHERE CODIGO_BARRA=?";
         PreparedStatement psProductos=null;
@@ -96,6 +104,7 @@ public class Productos {
             try {
                 if(psProductos!=null) psProductos.close();
                 if(resultadoId!=null) resultadoId.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),"Error al cerrar conexion al actualizar producto"
@@ -109,6 +118,10 @@ public class Productos {
         // SELECT valor FROM cporcentaje_comision
         String sql = "SELECT CATEGORIA FROM productos where ID="+idProducto+"";
         String categoria ="";
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion(); 
+        
         Statement st = null;
         ResultSet rs = null;
         try {
@@ -125,6 +138,7 @@ public class Productos {
             try {
                 if(st!=null)st.close();
                 if(rs!=null)rs.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),
@@ -138,7 +152,10 @@ public class Productos {
    	 
     	String sql="SELECT CANTIDAD,CATEGORIA FROM productos WHERE DESCRIPCION = '"+descripcion+"'";
         
-        String cantidad="";    	 
+        String cantidad="";
+
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion(); 
         Statement st = null;
         ResultSet rs = null;        
         try {
@@ -160,6 +177,7 @@ public class Productos {
             try {
                 if(st!=null)st.close();
                 if(rs!=null)rs.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),
@@ -171,6 +189,9 @@ public class Productos {
     
     public void actualizarStateTablaProductos(int id_producto,int idState) {
         PreparedStatement pst=null;
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
+        
         try {
             pst = cn.prepareStatement("UPDATE productos SET fk_id_state='"+idState+"' WHERE id='"+id_producto+"'");
             pst.executeUpdate();
@@ -179,13 +200,18 @@ public class Productos {
             JOptionPane.showMessageDialog(null,e.getMessage(),"Error al actualizar State tablaProductos",JOptionPane.ERROR_MESSAGE);
         }finally{
             try {
-                pst.close();
+                if(pst!=null)pst.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null,"helpers.sql.Productos: "+ex.getMessage(),"No se pudo cerrar la conexion al actualizar State",JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
     
+    
+    //este metodo no cierra la conexion de tipo Connection debido a que esta dentro de una transaccion u otro metodo que esta 
+    //utilizando dicha conexion, esta debe de cerrarse al final del proceso de la transaccion u metodo que este utilizando
+    //este metodo obtenerCostoProductoTablaProducto y no dentro de este ya que estaria cerrando la conexion premamaturamente lo cual causaria errores.
     public float obtenerCostoProductoTablaProducto(int idProducto) throws SQLException {
    	 
     	String sql="SELECT COSTO_UNITARIO FROM productos WHERE ID = '"+idProducto+"'";
@@ -194,10 +220,13 @@ public class Productos {
         Nota: si se va ocupar esta funcion en otra transaccion,  revisar la ubicacion de la funcion, dependiendo del flujo de la funcion en la transaccion
         puede que lo anteriormente mencionado funcione o no.
         */
-        Float costo=null;    	 
+        Float costo=null;
+        String mensajeExcepcion="";
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();        
 	Statement st=null;
         ResultSet rs=null;
-        String mensajeExcepcion="";
+        
         
         try {
             st = cn.createStatement();
@@ -222,10 +251,15 @@ public class Productos {
         return costo;
     }
     
+    //este metodo no cierra la conexion de tipo Connection debido a que esta dentro de una transaccion u otro metodo que esta 
+    //utilizando dicha conexion, esta debe de cerrarse al final del proceso de la transaccion u metodo que este utilizando
+    //este metodo obtenerCategoriaProductoTablaProducto y no dentro de este ya que estaria cerrando la conexion premamaturamente lo cual causaria errores.
     public String obtenerCategoriaTablaProducto(int idProducto) {//tal vez no se ocupe
       	 
     	String sql="SELECT CATEGORIA FROM productos WHERE ID = '"+idProducto+"'";
-	String categoria="";    	 
+	String categoria="";
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
 	Statement st=null;
         ResultSet rs=null;	    
         try {
@@ -250,9 +284,16 @@ public class Productos {
         return categoria;
     }
     
+    
+    //este metodo no cierra la conexion de tipo Connection debido a que esta dentro de una transaccion u otro metodo que esta 
+    //utilizando dicha conexion, esta debe de cerrarse al final del proceso de la transaccion u metodo que este utilizando
+    //este metodo obtenerCantidadProductoTablaProducto y no dentro de este ya que estaria cerrando la conexion premamaturamente lo cual causaria errores.
     public float obtenerCantidadTablaProducto(int idProducto) throws SQLException {  	    	 
         String sql="SELECT CANTIDAD FROM productos WHERE ID = '"+idProducto+"'";
-        float cantidad=0;    	 
+        float cantidad=0;
+
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
 	Statement st = null;
         ResultSet rs = null;
         String mensajeExcepcion="";

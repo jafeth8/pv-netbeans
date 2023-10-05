@@ -22,8 +22,7 @@ import validaciones_comprobaciones.ValidacionesComprobaciones;
  * @author jafeth888
  */
 public class Buscadores {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     
     public void searchByBarCode(JTable tablaProductos,JTable tablaCompras,JTextField jtextFieldDescuento,JTextField buscador,JComboBox comboBoxTipoBusqueda,JTextField jtextFieldCantidadProductos,JLabel labelTotal,String nameTablaCompras){
         TableModel conexionTableModel=new TableModel();
@@ -157,9 +156,13 @@ public class Buscadores {
     
     
     
-    
+    //try catch cierra automaticamente las instancias a partir de java 7 en adelante por lo que en teoria no es necesario cerrar conexiones en un bloque finally
+    //para mas informacion: https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
     public boolean busquedaPorCodigoBarra(String valor) {
         String sql = "SELECT ID,CODIGO_BARRA,CANTIDAD,DESCRIPCION,PRECIO_UNITARIO,COSTO_UNITARIO from productos where CODIGO_BARRA='"+valor+"' AND fk_id_state=1";
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
+        
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);

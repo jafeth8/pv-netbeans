@@ -21,8 +21,7 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth888
  */
 public class ProductosAgotados extends javax.swing.JDialog {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     static ProductosAgotados dialog = new ProductosAgotados(new javax.swing.JFrame(), true);
 
     /**
@@ -51,6 +50,8 @@ public class ProductosAgotados extends javax.swing.JDialog {
         }
 
         String []datos = new String [2];
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);

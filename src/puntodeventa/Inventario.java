@@ -18,8 +18,6 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth8
  */
 public class Inventario extends javax.swing.JFrame {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
     /**
      * Creates new form Inventario
      */
@@ -29,6 +27,8 @@ public class Inventario extends javax.swing.JFrame {
     }
     
     public void mostrardatos(String valor){
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         DefaultTableModel modelo= new DefaultTableModel();
         modelo.addColumn("Id producto");
         modelo.addColumn("Descripcion");

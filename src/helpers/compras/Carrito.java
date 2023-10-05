@@ -32,8 +32,7 @@ public class Carrito {
     TableModel tableModel = new TableModel();
     JFrame parent;
     Productos producto=new Productos();
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
 
     public Carrito(JFrame parent) {
         this.parent=parent;
@@ -208,6 +207,10 @@ public class Carrito {
      **/
     public void pagar(JTable tablaProductos,JTable tablaCompras,JLabel labelTotal,JLabel labelCambio,JLabel usuarioLabel,boolean pagar){
         //TODO: revisar que transacciones funcionen correctamente, depues borrar este comentario y hacer un commit especificando la tarea realizada. 
+        
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
+        
         float total;
 	float pagoIngresado;
         total= instanciaTablaCompras.obtenerSumatoriaSubtotalTablaTcompras(Ruta.nametablaTcompras);
@@ -305,7 +308,7 @@ public class Carrito {
             
             if(pagar) labelCambio.setText("$ "+cambioDelCliente+"");
             total=0;
-            tableModel.mostrarDatosProductos("",tablaProductos);
+            
             
             if(pagar){
                 int pre=JOptionPane.showConfirmDialog(null, "DESEA IMPRIMIR TICKET ?","",JOptionPane.YES_NO_OPTION);
@@ -323,6 +326,7 @@ public class Carrito {
             
             //mostrar estructura tablaCompras
             tableModel.datosTablaTcompras("", tablaCompras,"tcompras");
+            tableModel.mostrarDatosProductos("",tablaProductos);
             
             labelTotal.setText("0.0");
             labelCambio.setText("0.0");
@@ -344,6 +348,7 @@ public class Carrito {
                 if(psInsertDetalleVentas!=null)psInsertDetalleVentas.close();
                 if(psTruncarTabla!=null)psTruncarTabla.close();
                 if(resultado!=null)resultado.close();
+                if(cn!=null)cn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage(),"helpers.compras.Carrito.pagar(): no se establecio"

@@ -16,12 +16,14 @@ import puntodeventa.bd.ConexionBd;
  * @author jafeth888
  */
 public class TablaCompras {
-    ConexionBd cc= ConexionBd.obtenerInstancia();
-    Connection cn= cc.conexion();
+
     
     public void actualizarRegistroTablaTCompras(float cantidad,float subTotal,String descripcion,String nameTablaTcompras) {
         PreparedStatement preparedStatement=null;
+
         try {
+            ConexionBd cc= ConexionBd.obtenerInstancia();
+            Connection cn= cc.conexion();
             preparedStatement=cn.prepareStatement("UPDATE "+nameTablaTcompras+" SET CANTIDAD=? , SUB_TOTAL=? WHERE DESCRIPCION=?");
             preparedStatement.setFloat(1, cantidad);
             preparedStatement.setFloat(2, subTotal);
@@ -43,6 +45,8 @@ public class TablaCompras {
     public void ingresarNuevoRegistroTablaTcompras(int idProducto,String cantidad,String descripcion,String precioUnitario,String subTotal,String descuento,String nameTablaTcompras) {
 	PreparedStatement preparedStatement=null;	
         try {
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         preparedStatement = cn.prepareStatement("INSERT INTO "+nameTablaTcompras
             + " (ID,CANTIDAD,DESCRIPCION,PRECIO_UNITARIO,SUB_TOTAL,DESCUENTO) VALUES (?,?,?,?,?,?)");
         preparedStatement.setInt(1,idProducto);
@@ -68,6 +72,8 @@ public class TablaCompras {
     public boolean existenciaEnComprasPorDescripcion(String des,String nameTablaCompras) {
         Statement st = null;
         ResultSet resultadosConsulta=null;
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         try {
 
             st = cn.createStatement();
@@ -92,10 +98,17 @@ public class TablaCompras {
         }
     }
     
+    
+    //este metodo no cierra la conexion de tipo Connection debido a que esta dentro de una transaccion u otro metodo que esta 
+    //utilizando dicha conexion, esta debe de cerrarse al final del proceso de la transaccion u metodo que este utilizando
+    //este metodo obtenerSumatoriaSubtotalTablaTcompras y no dentro de este ya que estaria cerrando la conexion premamaturamente lo cual causaria errores.
     public float obtenerSumatoriaSubtotalTablaTcompras(String nameTablaCompras) {
       	 
     	String sql="SELECT SUM(SUB_TOTAL) FROM "+nameTablaCompras+"";
-        Float sumatoria=null;    	 
+        Float sumatoria=null;
+
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         Statement st = null;
         ResultSet rs = null;
         try {
@@ -118,8 +131,11 @@ public class TablaCompras {
         }
         return sumatoria;
     }
-        
+    
+    //este metodo esta dentro de una transaccion, !! favor de no cerrar objeto Connetion
     public void truncarTablaTcompras(String querySql) {
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         try {
             PreparedStatement pst = cn.prepareStatement(querySql);
             pst.executeUpdate();
@@ -129,7 +145,10 @@ public class TablaCompras {
         }
     }
     
+    //se condidero no cerrar conexiones ya que esta en conjunto con otras operaciones sql
     public void eliminarRegistroTablaTcompras(String descripcion,String nameTablaCompras) {
+        ConexionBd cc= ConexionBd.obtenerInstancia();
+        Connection cn= cc.conexion();
         try {
             PreparedStatement pst = cn.prepareStatement("DELETE FROM "+nameTablaCompras+" WHERE  DESCRIPCION=?");
             pst.setString(1, descripcion);
