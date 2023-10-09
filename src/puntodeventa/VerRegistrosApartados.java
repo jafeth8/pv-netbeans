@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -203,8 +204,6 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
     
     public void imprimircomprobante(){
         
-        
-        
         int fila=table.getSelectedRow();
         
         String dinerorecibido = table.getValueAt(fila, 1).toString();
@@ -222,29 +221,33 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
             //Definir el tamanho del papel para la impresion de dinamico y 32 columnas
             // int filas = tablaHistorialVenta.getRowCount();
             //int tamanio = filas+15;
-            printer.setOutSize(10, 80);
+            printer.setOutSize(13, 80);
 
             //Imprimir = 1ra linea de la columa de 1 a 32
 
-            printer.printTextWrap(0, 1, 5, 80, "=======================================================");
-            printer.printTextWrap(1, 1, 40, 80, direccion); 
-            printer.printTextWrap(1, 1, 5, 80, establecimiento);
-            printer.printTextWrap(2, 1, 40, 80, "Tel. "+telefono);
-            printer.printTextWrap(2, 1, 10, 80, localidad+","+estado);
-            printer.printTextWrap(3, 1, 0, 40, "Fecha: "+fecha);
 
-            printer.printTextWrap(4, 1, 0, 40, "Dinero Recibido: "+dinerorecibido);
-            printer.printTextWrap(5, 1, 0, 40, "Abono: "+abono);
-            printer.printTextWrap(6, 1, 0, 40, "Cambio : "+cambio);
+            printer.printTextWrap(1, 1, 40, 80, direccion); //Nombre establecimiento
+            printer.printTextWrap(1, 1, 5, 80, establecimiento); //Barrio
+            printer.printTextWrap(2, 1, 40, 80, "Tel. "+telefono); //Direccion
+            printer.printTextWrap(2, 1, 5, 80, localidad+","+estado); //Codigo Postal
+
+            printer.printTextWrap(3, 1, 0, 80, "=======================================================");
+            printer.printTextWrap(4, 1, 0, 40, "Fecha de apartado: "+tablaMostrarApartado.getValueAt(0,4).toString());
+            printer.printTextWrap(5, 1, 0, 40, "Cliente: "+tablaMostrarApartado.getValueAt(0,2).toString());
+
+            printer.printTextWrap(6, 1, 0, 40, "Dinero Recibido: "+dinerorecibido);
+            printer.printTextWrap(7, 1, 0, 40, "Abono: "+abono);
+            printer.printTextWrap(8, 1, 0, 80, "Fecha de Abono: "+fecha);
+            printer.printTextWrap(9, 1, 0, 40, "Cambio : "+cambio);
             //printer.printTextWrap(5, 1, 0, 40, "Dinero Recibido");
-            printer.printTextWrap(7, 1, 0, 40, "Deuda : "+ deuda);
+            printer.printTextWrap(10, 1, 0, 40, "Deuda : "+ deuda);
 
             DecimalFormat formateador = new DecimalFormat("#.###");
+            //5
+            printer.printTextWrap(11, 1, 40,80,"!Comprobante de pago!");
 
-            printer.printTextWrap(8, 1, 5,80,"!Comprobante de pago!");
 
-
-            printer.printTextWrap(9, 1, 3,80, "===================================================================");
+            printer.printTextWrap(12, 1, 0,80, "===================================================================");
 
             printer.toFile("impresion.txt");
 
@@ -305,28 +308,30 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
             e2.setNumber(10);
             //Definir el tamanho del papel para la impresion de dinamico y 32 columnas
             int filas = tablaDetalleApartado.getRowCount();
-            int tamanio = filas+15;
+            int tamanio = filas+17;
             printernew.setOutSize(tamanio, 80);
 
             //Imprimir = 1ra linea de la columa de 1 a 32
-            printernew.printTextWrap(0, 1, 5, 80, "=======================================================");
-            printernew.printTextWrap(1, 1, 40, 80, direccion);
-            printernew.printTextWrap(1, 1, 5, 80, establecimiento);
-            printernew.printTextWrap(2, 1, 40, 80, "Tel. "+telefono);
-            printernew.printTextWrap(2, 1, 10, 80, localidad+","+estado);
+			    
+            printernew.printTextWrap(1, 1, 40, 80, direccion); //Nombre establecimiento
+            printernew.printTextWrap(1, 1, 5, 80, establecimiento); //Barrio
+            printernew.printTextWrap(2, 1, 40, 80, "Tel. "+telefono); //Direccion
+            printernew.printTextWrap(2, 1, 5, 80, localidad+","+estado); //Codigo Postal
 
-            printernew.printTextWrap(3, 1, 0, 40, "Fecha: "+dia+"/"+mes+"/"+anio); //Aqui va la fecha de recibo
-            printernew.printTextWrap(3, 1, 40, 80, "Hora"+hora+":"+minuto+":"+segundo); //Aqui va la hora de recibo
-
-
+            printernew.printTextWrap(3, 1, 0, 80, "=======================================================");
+            printernew.printTextWrap(4, 1, 0, 40, "Fecha de apartado: "+tablaMostrarApartado.getValueAt(0,4).toString());
+            printernew.printTextWrap(5, 1, 0, 80, "Cliente: "+tablaMostrarApartado.getValueAt(0,2).toString());
+            //Aqui va la fecha de recibo
+			    
+			    
+			   
             //printer.printTextWrap(9, 1, 3, 80, "Cliente");//Nombre del Cliente
             //printer.printTextWrap(10,1, 5, 80, "������������������������������������������������������������������");
-            printernew.printTextWrap(4,1, 0, 80, "Producto           Sub.T");
+            printernew.printTextWrap(6,1, 0, 80, "Producto           Sub.T");
             //printer.printTextWrap(12,1, 0, 80, "## ");
 
             for (int i = 0; i < filas; i++) {
-                int p = 5+i; //Fila
-
+                int p = 7+i; //Fila
                 printernew.printTextWrap(p , 1, 20, 49, tablaDetalleApartado.getValueAt(i,4).toString());
                 printernew.printTextWrap(p , 1, 0, 19 , tablaDetalleApartado.getValueAt(i,2).toString());
                 // printernew.printTextWrap(p , 1, 5, 42 , tablaDetalleApartado.getValueAt(i,3).toString());
@@ -341,27 +346,28 @@ public class VerRegistrosApartados extends javax.swing.JDialog {
             DecimalFormat formateador = new DecimalFormat("#.###");
 
 
-            printernew.printTextWrap(filas+6, 1, 5, 80, "Subtotal: ");
-            printernew.printTextWrap(filas+6, 1, 20, 80, "$"+totalcompra);
+            printernew.printTextWrap(filas+8, 1, 0, 80, "Subtotal: ");
+            printernew.printTextWrap(filas+8, 1, 20, 80, "$"+totalcompra);
 
             // String tot= printer.alinharADireita(10, total);
-            printernew.printTextWrap(filas+7, 1, 5, 80, "Total a pagar: ");
-            printernew.printTextWrap(filas+7, 1, 20, 80, "$"+totalcompra);
+            printernew.printTextWrap(filas+9, 1, 0, 80, "Total a pagar: ");
+            printernew.printTextWrap(filas+9, 1, 20, 80, "$"+totalcompra);
 
             //String efe= printer.alinharADireita(10,90);
-            printernew.printTextWrap(filas+8, 1, 5, 80, "Total Abono : ");
-            printernew.printTextWrap(filas+8, 1, 20, 80, "$"+totalabono);
+            printernew.printTextWrap(filas+10, 1, 0, 80, "Total Abono : ");
+            printernew.printTextWrap(filas+10, 1, 20, 80, "$"+totalabono);
 
             //String cam= printer.alinharADireita(10,9);
-            printernew.printTextWrap(filas+9, 1, 5, 80, "Deuda : ");
-            printernew.printTextWrap(filas+9, 1, 20, 80, "$"+DeudaTotal);
+            printernew.printTextWrap(filas+11, 1, 0, 80, "Deuda : ");
+            printernew.printTextWrap(filas+11, 1, 20, 80, "$"+DeudaTotal);
 
             //printer.printTextWrap(filas+21, 1, 5, 80, "������������������������������������������������������������������");
-            printernew.printTextWrap(filas+10, 1, 5,80, "!Gracias por su Compra!");
-            printernew.printTextWrap(filas+11, 1, 5, 80, establecimiento);
+            printernew.printTextWrap(filas+13, 1, 0,80, "!Gracias por su Compra!");
+            printernew.printTextWrap(filas+14, 1, 0, 80, establecimiento);
             //printer.printTextWrap(filas+12, 1, 2, 80, "Atendido por : "+UsuarioLabel.getText());
             //printer.printTextWrap(filas+13, 1, 3, 80, "Contacto: workitapp@gmail.com");
-            printernew.printTextWrap(filas+12, 1, 3,80, "===================================================================");
+            printernew.printTextWrap(filas+15, 1, 0, 80, "impresion de ticket: "+LocalDateTime.now().toString());
+            printernew.printTextWrap(filas+16, 1, 0,80, "===================================================================");
 
             printernew.toFile("impresion.txt");
 

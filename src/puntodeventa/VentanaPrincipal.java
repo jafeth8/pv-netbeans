@@ -131,7 +131,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         usuarioLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         usuarioLabel.setForeground(new java.awt.Color(255, 51, 51));
-        usuarioLabel.setText("jLabel1");
+        usuarioLabel.setText("User");
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar.png"))); // NOI18N
         btnAgregar.setText("AGREGAR PRODUCTO");
